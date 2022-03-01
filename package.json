@@ -1,0 +1,13 @@
+{
+  "name": "gws-subgraph",
+  "version": "0.1.0",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ axa-cem/gwskovan3 ./subgraph.yaml --access-token b0987aa861e74b808ab1017883828cc1"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "^0.22.0",
+    "@graphprotocol/graph-ts": "^0.22.0"
+  }
+}

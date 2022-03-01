@@ -1,0 +1,169 @@
+specVersion: 0.0.2
+description: Olympus DAO Subgraph
+repository: https://github.com/OlympusDAO/olympus-subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  #Staking Contract V1
+  - kind: ethereum/contract
+    name: OlympusStakingV1
+    network: kovan
+    source:
+      address: '0xe6522e8776d673596956334250a132aCE7A0F55E'
+      abi: OlympusStakingV1
+      startBlock: 30118158
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - OlympusStakingV1
+      abis:
+        - name: OlympusStakingV1
+          file: ./abis/OlympusStakingV1.json
+        - name: sOlympusERC20
+          file: ./abis/sOlympusERC20.json
+        - name: OlympusERC20
+          file: ./abis/OlympusERC20.json
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json
+        - name: DAIBondV1
+          file: ./abis/DAIBondV1.json
+        - name: OHMDAIBondV1
+          file: ./abis/OHMDAIBondV1.json
+        - name: CirculatingSupply
+          file: ./abis/CirculatingSupply.json
+        - name: BondingCalculator
+          file: ./abis/BondingCalculator.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      callHandlers:
+        - function: stake(uint256,address)
+          handler: handleStake
+        - function: unstake(uint256,bool)
+          handler: handleUnstake
+      file: ./src/OlympusStakingV1.ts
+  #Staking Contract Helper
+  - kind: ethereum/contract
+    name: OlympusStakingV1Helper
+    network: kovan
+    source:
+      address: '0xFA953f9ab514361890d9628dB97cb58Ef6b743d7'
+      abi: OlympusStakingV1Helper
+      startBlock: 30118162
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - OlympusStakingV1Helper
+      abis:
+        - name: OlympusStakingV1
+          file: ./abis/OlympusStakingV1.json
+        - name: OlympusStakingV1Helper
+          file: ./abis/OlympusStakingV1Helper.json
+        - name: sOlympusERC20
+          file: ./abis/sOlympusERC20.json
+        - name: OlympusERC20
+          file: ./abis/OlympusERC20.json
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json
+        - name: DAIBondV1
+          file: ./abis/DAIBondV1.json
+        - name: OHMDAIBondV1
+          file: ./abis/OHMDAIBondV1.json
+      callHandlers:
+        - function: stake(uint256,address)
+          handler: handleStake
+      file: ./src/OlympusStakingV1Helper.ts
+  #DAI Bond Contract V1
+  - kind: ethereum/contract
+    name: DAIBondV1
+    network: kovan
+    source:
+      address: '0xE00E4967D09C7b466Ddc2BEdd3802dCee877771D'
+      abi: DAIBondV1
+      startBlock: 30118382
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - DAIBondDeposit
+      abis:
+        - name: OlympusStakingV1
+          file: ./abis/OlympusStakingV1.json
+        - name: sOlympusERC20
+          file: ./abis/sOlympusERC20.json
+        - name: OlympusERC20
+          file: ./abis/OlympusERC20.json
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json
+        - name: DAIBondV1
+          file: ./abis/DAIBondV1.json
+        - name: OHMDAIBondV1
+          file: ./abis/OHMDAIBondV1.json
+      callHandlers:
+        - function: deposit(uint256,uint256,address)
+          handler: handleDeposit
+        - function: redeem(address,bool)
+          handler: handleRedeem
+      file: ./src/DAIBondV1.ts
+  #OHM DAI LP Bond Contract
+  - kind: ethereum/contract
+    name: OHMDAIBondV1
+    network: kovan
+    source:
+      address: '0xC0d8ae0fa3E8A3aD19502a8dA9A4331Fd8FA1Ea4'
+      abi: OHMDAIBondV1
+      startBlock: 30118577
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - OHMDAIBondV1
+      abis:
+        - name: OlympusStakingV1
+          file: ./abis/OlympusStakingV1.json
+        - name: sOlympusERC20
+          file: ./abis/sOlympusERC20.json
+        - name: OlympusERC20
+          file: ./abis/OlympusERC20.json
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json
+        - name: DAIBondV1
+          file: ./abis/DAIBondV1.json
+        - name: OHMDAIBondV1
+          file: ./abis/OHMDAIBondV1.json
+      callHandlers:
+        - function: deposit(uint256,uint256,address)
+          handler: handleDeposit
+        - function: redeem(address,bool)
+          handler: handleRedeem
+      file: ./src/OHMDAIBondV1.ts
+  #sOHM
+  - kind: ethereum/contract
+    name: sOlympusERC20V1
+    network: kovan
+    source:
+      address: '0x3d592365312C42bAa78b6237a8e522433b872ef6'
+      abi: sOlympusERC20
+      startBlock: 30118136
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - sOlympusERC20V1
+      abis:
+        - name: sOlympusERC20
+          file: ./abis/sOlympusERC20.json
+        - name: OlympusERC20
+          file: ./abis/OlympusERC20.json
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json
+      callHandlers:
+        - function: rebase(uint256,uint256)
+          handler: rebaseFunction
+      file: ./src/sOlympusERC20V1.ts
