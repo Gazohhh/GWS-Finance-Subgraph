@@ -7,7 +7,7 @@ import { UniswapV2Pair } from '../../generated/OlympusStakingV1/UniswapV2Pair';
 import { OlympusStakingV1 } from '../../generated/OlympusStakingV1/OlympusStakingV1';
 
 import { ProtocolMetric, Transaction } from '../../generated/schema'
-import { CIRCULATING_SUPPLY_CONTRACT, ERC20DAI_CONTRACT, OHMDAISLPBOND_CONTRACT_BLOCK, OHM_ERC20_CONTRACT, SOHM_ERC20_CONTRACT, STAKING_CONTRACT, SUSHI_OHMDAI_PAIR, TREASURY_ADDRESS } from './Constants';
+import { CIRCULATING_SUPPLY_CONTRACT, DAI_ERC20_CONTRACT, OHMDAISLPBOND_CONTRACT_BLOCK, OHM_ERC20_CONTRACT, SOHM_ERC20_CONTRACT, STAKING_CONTRACT, SUSHI_OHMDAI_PAIR, TREASURY_ADDRESS } from './Constants';
 import { dayFromTimestamp } from './Dates';
 import { toDecimal } from './Decimals';
 import { getOHMUSDRate, getDiscountedPairUSD, getPairUSD } from './Price';
@@ -84,7 +84,7 @@ function getSOHMSupply(): BigDecimal {
 }
 
 function getMV_RFV(transaction: Transaction): ITreasury {
-    let daiERC20 = ERC20.bind(Address.fromString(ERC20DAI_CONTRACT))
+    let daiERC20 = ERC20.bind(Address.fromString(DAI_ERC20_CONTRACT))
     let ohmdaiPair = UniswapV2Pair.bind(Address.fromString(SUSHI_OHMDAI_PAIR))
     let treasury_address = TREASURY_ADDRESS;
 

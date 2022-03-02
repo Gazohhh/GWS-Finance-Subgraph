@@ -81,9 +81,9 @@ dataSources:
     name: DAIBondV1
     network: kovan
     source:
-      address: '0x83A96f4BA58A716eB8b7a9EaaB103E01D6F3BD5c'
+      address: '0xF40f1203BC3da00c5F7e628D280AE8fdC42CDc65'
       abi: DAIBondV1
-      startBlock: 30136751
+      startBlock: 30138910
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
