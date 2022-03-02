@@ -146,20 +146,16 @@ function getAPY_Rebase(sOHMCirculatingSupply: BigDecimal, nextDistributedOHM: Bi
     const stakingContract = OlympusStakingV1.bind(Address.fromString(STAKING_CONTRACT))
     const tryDistribute = stakingContract.try_epoch();
     const stakingReward = tryDistribute.reverted ? Number.parseFloat("0") : Number.parseFloat(tryDistribute.value.value3.toString());
-
     const sorkanContract = sOlympusERC20.bind(Address.fromString(SOHM_ERC20_CONTRACT));
     const tryCirculatingSupply = sorkanContract.try_circulatingSupply();
     const circulatingSupply = tryCirculatingSupply.reverted ? Number.parseFloat("0") : Number.parseFloat(tryCirculatingSupply.value.toString());
-
     // isFinite() returns false if a value is Infinity, -Infinity, or NaN, otherwise true.
     const stakingRebase = !isFinite(Number.parseFloat(stakingReward.toString()) / Number.parseFloat(circulatingSupply.toString()))
         ? Number.parseFloat("0")
         : (Number.parseFloat(stakingReward.toString()) / Number.parseFloat(circulatingSupply.toString()));
-
     // isFinite() returns false if a value is Infinity, -Infinity, or NaN, otherwise true.
     const currentAPY = !isFinite(Math.pow(1 + stakingRebase, 365 * 3) - 1) ? Number.parseFloat("0") : Math.pow(1 + stakingRebase, 365 * 3) - 1;
     const trimmedCurrentAPY = currentAPY * 100;
-
     let nextEpochRebase = BigDecimal.fromString("0");
     // Next epoch rebase can only be determined when the values are higher than 0.
     if (nextDistributedOHM.gt(BigDecimal.fromString("0")) && sOHMCirculatingSupply.gt(BigDecimal.fromString("0"))) {
@@ -240,12 +236,9 @@ export function updateProtocolMetrics(transaction: Transaction): void {
 
     // Rebase rewards, APY, rebase
     pm.nextDistributedOhm = getNextOHMRebase()
-    log.warning("pm.nextDistributedOhm {}", [pm.nextDistributedOhm.toString()])
     let apy_rebase = getAPY_Rebase(pm.sOhmCirculatingSupply, pm.nextDistributedOhm)
     pm.currentAPY = apy_rebase[0]
-    log.warning("pm.currentAPY {}", [pm.currentAPY.toString()])
     pm.nextEpochRebase = apy_rebase[1]
-    log.warning("pm.nextEpochRebase {}", [pm.nextEpochRebase.toString()])
 
     //Runway
     let runways = getRunway(pm.sOhmCirculatingSupply, pm.treasuryRiskFreeValue, pm.nextEpochRebase)

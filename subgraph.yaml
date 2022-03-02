@@ -9,9 +9,9 @@ dataSources:
     name: OlympusStakingV1
     network: kovan
     source:
-      address: '0xe6522e8776d673596956334250a132aCE7A0F55E'
+      address: '0xe328b24d8cE30D35543c83688A089AF4cb17F8FC'
       abi: OlympusStakingV1
-      startBlock: 30118158
+      startBlock: 30136217
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -48,9 +48,9 @@ dataSources:
     name: OlympusStakingV1Helper
     network: kovan
     source:
-      address: '0xFA953f9ab514361890d9628dB97cb58Ef6b743d7'
+      address: '0xa9BDFD43f205311f2E31b894a679AdED55670bE7'
       abi: OlympusStakingV1Helper
-      startBlock: 30118162
+      startBlock: 30136221
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -81,9 +81,9 @@ dataSources:
     name: DAIBondV1
     network: kovan
     source:
-      address: '0xE00E4967D09C7b466Ddc2BEdd3802dCee877771D'
+      address: '0x83A96f4BA58A716eB8b7a9EaaB103E01D6F3BD5c'
       abi: DAIBondV1
-      startBlock: 30118382
+      startBlock: 30136751
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -114,9 +114,9 @@ dataSources:
     name: OHMDAIBondV1
     network: kovan
     source:
-      address: '0xC0d8ae0fa3E8A3aD19502a8dA9A4331Fd8FA1Ea4'
+      address: '0x4F0C8bB7575616708c8739c9A0aEdA4ed3d89C01'
       abi: OHMDAIBondV1
-      startBlock: 30118577
+      startBlock: 30136808
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -147,9 +147,9 @@ dataSources:
     name: sOlympusERC20V1
     network: kovan
     source:
-      address: '0x3d592365312C42bAa78b6237a8e522433b872ef6'
+      address: '0x03622d3245ad48a9949C773CbA3fE1c59e0D7d3B'
       abi: sOlympusERC20
-      startBlock: 30118136
+      startBlock: 30136139
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

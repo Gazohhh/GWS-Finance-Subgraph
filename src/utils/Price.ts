@@ -22,18 +22,34 @@ export function getETHUSDRate(): BigDecimal {
 }
 
 export function getOHMUSDRate(): BigDecimal {
+    // let pair = UniswapV2Pair.bind(Address.fromString(SUSHI_OHMDAI_PAIR))
+    // let reserves = pair.try_getReserves()
+    // let marketPrice: BigDecimal = BigDecimal.fromString("0");
+    // if (reserves.reverted == false) {
+    //     let reserve0 = reserves.value.value0.toBigDecimal()
+    //     log.warning("reserve0 {}", [reserve0.toString()]);
+    //     let reserve1 = reserves.value.value1.toBigDecimal()
+    //     log.warning("reserve1 {}", [reserve1.toString()]);
+    //     let rate = reserve1.div(reserve0).div(BIG_DECIMAL_1E9);
+    //     log.warning("rate {}", [rate.toString()]);
+    //     marketPrice = rate;
+    // }
+    // log.warning("getOHMUSDRate reverted {}", [reserves.reverted.toString()]);
+    // log.warning("getOHMUSDRate marketPrice {}", [marketPrice.toString()])
+    // return marketPrice;
+
     let pair = UniswapV2Pair.bind(Address.fromString(SUSHI_OHMDAI_PAIR))
     let reserves = pair.try_getReserves()
-    let rate: BigDecimal = BigDecimal.fromString("0");
+    let marketPrice: BigDecimal = BigDecimal.fromString("0");
     if (reserves.reverted == false) {
         let reserve0 = reserves.value.value0.toBigDecimal()
-        let reserve1 = reserves.value.value1.toBigDecimal()
-        let ethRate = reserve1.div(reserve0).div(BIG_DECIMAL_1E9);
-        rate = ethRate;
+        let reserve1 = reserves.value.value1.toBigDecimal().div(BIG_DECIMAL_1E9) // !!!: NOTE: Converting the Reserve 1 (DAI) to a 9 decimal
+        let rate = reserve0.div(reserve1)
+        marketPrice = rate;
     }
     log.warning("getOHMUSDRate reverted {}", [reserves.reverted.toString()]);
-    log.warning("getOHMUSDRate rate {}", [rate.toString()])
-    return rate;
+    log.warning("getOHMUSDRate marketPrice {}", [marketPrice.toString()])
+    return marketPrice;
 }
 
 //(slp_treasury/slp_supply)*(2*sqrt(lp_dai * lp_ohm))
