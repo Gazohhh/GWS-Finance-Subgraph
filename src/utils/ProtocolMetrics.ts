@@ -7,7 +7,7 @@ import { UniswapV2Pair } from '../../generated/OlympusStakingV1/UniswapV2Pair';
 import { OlympusStakingV1 } from '../../generated/OlympusStakingV1/OlympusStakingV1';
 
 import { ProtocolMetric, Transaction } from '../../generated/schema'
-import { CIRCULATING_SUPPLY_CONTRACT, DAI_ERC20_CONTRACT, OHMDAISLPBOND_CONTRACT_BLOCK, OHM_ERC20_CONTRACT, SOHM_ERC20_CONTRACT, STAKING_CONTRACT, SUSHI_OHMDAI_PAIR, TREASURY_ADDRESS } from './Constants';
+import { CIRCULATING_SUPPLY_CONTRACT, DAI_ERC20_CONTRACT, OHMDAISLPBOND_CONTRACT_BLOCK, OHM_ERC20_CONTRACT, SOHM_ERC20_CONTRACT, STAKING_CONTRACT, SUSHI_OHMDAI_PAIR, TREASURY_ADDRESS, USDC_ERC20_CONTRACT } from './Constants';
 import { dayFromTimestamp } from './Dates';
 import { toDecimal } from './Decimals';
 import { getOHMUSDRate, getDiscountedPairUSD, getPairUSD } from './Price';
@@ -85,6 +85,7 @@ function getSOHMSupply(): BigDecimal {
 
 function getMV_RFV(transaction: Transaction): ITreasury {
     let daiERC20 = ERC20.bind(Address.fromString(DAI_ERC20_CONTRACT))
+    let usdcERC20 = ERC20.bind(Address.fromString(USDC_ERC20_CONTRACT))
     let ohmdaiPair = UniswapV2Pair.bind(Address.fromString(SUSHI_OHMDAI_PAIR))
     let treasury_address = TREASURY_ADDRESS;
 
@@ -92,6 +93,11 @@ function getMV_RFV(transaction: Transaction): ITreasury {
     let daiTryBalance = daiERC20.try_balanceOf(Address.fromString(treasury_address))
     let daiBalance = daiTryBalance.reverted ? BigInt.fromString("0") : daiTryBalance.value;
     log.warning("daiBalance Value {}", [daiBalance.toString()])
+
+    // USDC
+    let usdcTryBalance = usdcERC20.try_balanceOf(Address.fromString(treasury_address))
+    let usdcBalance = usdcTryBalance.reverted ? BigInt.fromString("0") : usdcTryBalance.value;
+    log.warning("usdcBalance Value {}", [usdcBalance.toString()])
 
     // OHM-DAI
     let ohmdai_value = BigDecimal.fromString("0");
@@ -113,7 +119,7 @@ function getMV_RFV(transaction: Transaction): ITreasury {
     // let lpValue = ohmdai_value.plus(ohmfrax_value).plus(ohmlusd_value).plus(ohmeth_value);
     // let rfvLpValue = ohmdai_rfv.plus(ohmfrax_rfv).plus(ohmlusd_rfv).plus(ohmeth_rfv)
     // let treasuryMarketValue = stableValueDecimal.plus(lpValue).plus(xSushi_value).plus(weth_value)
-    let stableValue = daiBalance;
+    let stableValue = daiBalance.plus(usdcBalance);
     let stableValueDecimal = toDecimal(stableValue, 18)
     let lpValue = ohmdai_value;
     let rfvLpValue = ohmdai_rfv

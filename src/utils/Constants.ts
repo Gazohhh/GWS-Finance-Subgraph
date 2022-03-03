@@ -9,9 +9,14 @@ export const OHMDAISLPBOND_CONTRACT: string         = '0x4F0C8bB7575616708c8739c
 export const OHMDAISLPBOND_CONTRACT_BLOCK: string   = '30136808';
 
 export const DAIBOND_TOKEN: string                  = "DAI";
-export const DAI_ERC20_CONTRACT: string              = '0x48acA28139cde7805c53E489215C2e0FE69c286c';
-export const DAIBOND_CONTRACT: string               = '0xF40f1203BC3da00c5F7e628D280AE8fdC42CDc65';
-export const DAIBOND_CONTRACT_BLOCK: string         = '30138910';
+export const DAI_ERC20_CONTRACT: string             = '0x48acA28139cde7805c53E489215C2e0FE69c286c';
+export const DAIBOND_CONTRACT: string               = '0x521c87D9fce11918Ba80d294a8218b09355D00a2';
+export const DAIBOND_CONTRACT_BLOCK: string         = '30159026';
+
+export const USDCBOND_TOKEN: string                 = "USDC";
+export const USDC_ERC20_CONTRACT: string            = '0xC4994a36E29b0A02d2201F4C5a08838053254899';
+export const USDCBOND_CONTRACT: string              = '0x633A74c9a3350C1FFF81740fad456F8334f79BbE';
+export const USDCBOND_CONTRACT_BLOCK: string        = '30159188';
 
 // # Addresses
 export const TREASURY_ADDRESS: string               = '0x793318b69ea5b646D3DDbe2f7525d4F88F7E3146';

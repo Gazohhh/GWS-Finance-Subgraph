@@ -9,7 +9,7 @@ dataSources:
     name: OlympusStakingV1
     network: kovan
     source:
-      address: '0xe328b24d8cE30D35543c83688A089AF4cb17F8FC'
+      address: "0xe328b24d8cE30D35543c83688A089AF4cb17F8FC"
       abi: OlympusStakingV1
       startBlock: 30136217
     mapping:
@@ -48,7 +48,7 @@ dataSources:
     name: OlympusStakingV1Helper
     network: kovan
     source:
-      address: '0xa9BDFD43f205311f2E31b894a679AdED55670bE7'
+      address: "0xa9BDFD43f205311f2E31b894a679AdED55670bE7"
       abi: OlympusStakingV1Helper
       startBlock: 30136221
     mapping:
@@ -81,9 +81,9 @@ dataSources:
     name: DAIBondV1
     network: kovan
     source:
-      address: '0xF40f1203BC3da00c5F7e628D280AE8fdC42CDc65'
+      address: "0x521c87D9fce11918Ba80d294a8218b09355D00a2"
       abi: DAIBondV1
-      startBlock: 30138910
+      startBlock: 30159026
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -101,22 +101,52 @@ dataSources:
           file: ./abis/UniswapV2Pair.json
         - name: DAIBondV1
           file: ./abis/DAIBondV1.json
-        - name: OHMDAIBondV1
-          file: ./abis/OHMDAIBondV1.json
       callHandlers:
         - function: deposit(uint256,uint256,address)
           handler: handleDeposit
         - function: redeem(address,bool)
           handler: handleRedeem
-      file: ./src/DAIBondV1.ts
+      file:
+        ./src/DAIBondV1.ts
+  #USDC Bond Contract V1
+  - kind: ethereum/contract
+    name: USDCBondV1
+    network: kovan
+    source:
+      address: "0x633A74c9a3350C1FFF81740fad456F8334f79BbE"
+      abi: USDCBondV1
+      startBlock: 30159188
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - USDCBondDeposit
+      abis:
+        - name: OlympusStakingV1
+          file: ./abis/OlympusStakingV1.json
+        - name: sOlympusERC20
+          file: ./abis/sOlympusERC20.json
+        - name: OlympusERC20
+          file: ./abis/OlympusERC20.json
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json
+        - name: USDCBondV1
+          file: ./abis/USDCBondV1.json
+      callHandlers:
+        - function: deposit(uint256,uint256,address)
+          handler: handleDeposit
+        - function: redeem(address,bool)
+          handler: handleRedeem
+      file: ./src/USDCBondV1.ts
   #OHM DAI LP Bond Contract
   - kind: ethereum/contract
     name: OHMDAIBondV1
     network: kovan
     source:
-      address: '0x4F0C8bB7575616708c8739c9A0aEdA4ed3d89C01'
+      address: "0x08CE7dE29AF9271e8ACb05D022fd2fE821F23978"
       abi: OHMDAIBondV1
-      startBlock: 30136808
+      startBlock: 30159108
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -147,7 +177,7 @@ dataSources:
     name: sOlympusERC20V1
     network: kovan
     source:
-      address: '0x03622d3245ad48a9949C773CbA3fE1c59e0D7d3B'
+      address: "0x03622d3245ad48a9949C773CbA3fE1c59e0D7d3B"
       abi: sOlympusERC20
       startBlock: 30136139
     mapping:
