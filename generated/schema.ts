@@ -1007,6 +1007,10 @@ export class ProtocolMetric extends Entity {
       "treasuryDaiRiskFreeValue",
       Value.fromBigDecimal(BigDecimal.zero())
     );
+    this.set(
+      "treasuryUsdcRiskFreeValue",
+      Value.fromBigDecimal(BigDecimal.zero())
+    );
     this.set("treasuryDaiMarketValue", Value.fromBigDecimal(BigDecimal.zero()));
     this.set(
       "treasuryUsdcMarketValue",
@@ -1151,6 +1155,15 @@ export class ProtocolMetric extends Entity {
 
   set treasuryDaiRiskFreeValue(value: BigDecimal) {
     this.set("treasuryDaiRiskFreeValue", Value.fromBigDecimal(value));
+  }
+
+  get treasuryUsdcRiskFreeValue(): BigDecimal {
+    let value = this.get("treasuryUsdcRiskFreeValue");
+    return value!.toBigDecimal();
+  }
+
+  set treasuryUsdcRiskFreeValue(value: BigDecimal) {
+    this.set("treasuryUsdcRiskFreeValue", Value.fromBigDecimal(value));
   }
 
   get treasuryDaiMarketValue(): BigDecimal {

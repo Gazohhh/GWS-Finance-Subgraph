@@ -122,14 +122,14 @@ function getMV_RFV(transaction: Transaction): ITreasury {
     log.warning("Treasury RFV {}", [treasuryRiskFreeValue.toString()])
     log.warning("Treasury DAI value {}", [toDecimal(daiBalance, 18).toString()])
     log.warning("Treasury OHM-DAI RFV {}", [ohmdai_rfv.toString()])
-    log.warning("Treasury BigDecimal.fromString(usdcBalance.toString()) {}", [BigDecimal.fromString(usdcBalance.toString()).toString()])
 
     return {
         treasuryMarketValue, // TMV
         treasuryRiskFreeValue, // TRF
-        treasuryDaiRiskFreeValue: ohmdai_rfv.plus(toDecimal(daiBalance, 18)), // treasuryDaiRiskFreeValue = DAI RFV * DAI + aDAI
-        treasuryDaiMarketValue: ohmdai_value.plus(toDecimal(daiBalance, 18)), // treasuryDaiMarketValue = DAI LP * DAI + aDAI
-        treasuryUsdcMarketValue: BigDecimal.fromString(usdcBalance.toString()),
+        treasuryDaiRiskFreeValue: ohmdai_rfv.plus(toDecimal(daiBalance, 18)),
+        treasuryDaiMarketValue: ohmdai_value.plus(toDecimal(daiBalance, 18)),
+        treasuryUsdcRiskFreeValue: toDecimal(usdcBalance, 18),
+        treasuryUsdcMarketValue: toDecimal(usdcBalance, 18),
         treasuryOhmDaiPOL: ohmdaiPOL // POL
     }
 }
