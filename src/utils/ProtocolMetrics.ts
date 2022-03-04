@@ -34,17 +34,9 @@ export function loadOrCreateProtocolMetric(timestamp: BigInt): ProtocolMetric {
         protocolMetric.nextDistributedOhm = BigDecimal.fromString("0")
         protocolMetric.currentAPY = BigDecimal.fromString("0")
         protocolMetric.treasuryDaiRiskFreeValue = BigDecimal.fromString("0")
-        protocolMetric.treasuryFraxRiskFreeValue = BigDecimal.fromString("0")
-        protocolMetric.treasuryLusdRiskFreeValue = BigDecimal.fromString("0")
         protocolMetric.treasuryDaiMarketValue = BigDecimal.fromString("0")
-        protocolMetric.treasuryFraxMarketValue = BigDecimal.fromString("0")
-        protocolMetric.treasuryLusdMarketValue = BigDecimal.fromString("0")
-        protocolMetric.treasuryXsushiMarketValue = BigDecimal.fromString("0")
-        protocolMetric.treasuryWETHRiskFreeValue = BigDecimal.fromString("0")
-        protocolMetric.treasuryWETHMarketValue = BigDecimal.fromString("0")
-        protocolMetric.treasuryCVXMarketValue = BigDecimal.fromString("0")
+        protocolMetric.treasuryUsdcMarketValue = BigDecimal.fromString("0")
         protocolMetric.treasuryOhmDaiPOL = BigDecimal.fromString("0")
-        protocolMetric.treasuryOhmFraxPOL = BigDecimal.fromString("0")
         protocolMetric.treasuryOhmLusdPOL = BigDecimal.fromString("0")
         protocolMetric.treasuryOhmEthPOL = BigDecimal.fromString("0")
         protocolMetric.holders = BigInt.fromI32(0)
@@ -130,12 +122,14 @@ function getMV_RFV(transaction: Transaction): ITreasury {
     log.warning("Treasury RFV {}", [treasuryRiskFreeValue.toString()])
     log.warning("Treasury DAI value {}", [toDecimal(daiBalance, 18).toString()])
     log.warning("Treasury OHM-DAI RFV {}", [ohmdai_rfv.toString()])
+    log.warning("Treasury BigDecimal.fromString(usdcBalance.toString()) {}", [BigDecimal.fromString(usdcBalance.toString()).toString()])
 
     return {
         treasuryMarketValue, // TMV
         treasuryRiskFreeValue, // TRF
         treasuryDaiRiskFreeValue: ohmdai_rfv.plus(toDecimal(daiBalance, 18)), // treasuryDaiRiskFreeValue = DAI RFV * DAI + aDAI
         treasuryDaiMarketValue: ohmdai_value.plus(toDecimal(daiBalance, 18)), // treasuryDaiMarketValue = DAI LP * DAI + aDAI
+        treasuryUsdcMarketValue: BigDecimal.fromString(usdcBalance.toString()),
         treasuryOhmDaiPOL: ohmdaiPOL // POL
     }
 }
@@ -238,6 +232,7 @@ export function updateProtocolMetrics(transaction: Transaction): void {
     pm.treasuryRiskFreeValue = mv_rfv.treasuryRiskFreeValue;
     pm.treasuryDaiRiskFreeValue = mv_rfv.treasuryDaiRiskFreeValue;
     pm.treasuryDaiMarketValue = mv_rfv.treasuryDaiMarketValue;
+    pm.treasuryUsdcMarketValue = mv_rfv.treasuryUsdcMarketValue;
     pm.treasuryOhmDaiPOL = mv_rfv.treasuryOhmDaiPOL
 
     // Rebase rewards, APY, rebase

@@ -41,13 +41,16 @@ export function updateBondDiscounts(transaction: Transaction): void {
             bd.ohmdai_discount = bd.ohmdai_discount.times(BigDecimal.fromString("100"))
             log.warning("OHMDAI Discount OHM price {}  Bond Price {}  Discount {}", [ohmRate.toString(), price_call.value.toString(), bd.ohmfrax_discount.toString()])
         }
-        bd.ohmdai_discount = ohmRate.div(toDecimal(bond.bondPriceInUSD(), 18)).minus(BigDecimal.fromString("1")).times(BigDecimal.fromString("100"))
+        bd.ohmdai_discount = ohmRate.div(toDecimal(price_call.value, 18)).minus(BigDecimal.fromString("1")).times(BigDecimal.fromString("100"))
     }
 
     //DAI
     if (transaction.blockNumber.gt(BigInt.fromString(DAIBOND_CONTRACT_BLOCK))) {
         let bond = DAIBondV1.bind(Address.fromString(DAIBOND_CONTRACT))
-        bd.dai_discount = ohmRate.div(toDecimal(bond.bondPriceInUSD(), 18)).minus(BigDecimal.fromString("1")).times(BigDecimal.fromString("100"))
+        let price_call = bond.try_bondPriceInUSD()
+        if (price_call.reverted === false && price_call.value.gt(BigInt.fromI32(0))) {
+            bd.dai_discount = ohmRate.div(toDecimal(price_call.value, 18)).minus(BigDecimal.fromString("1")).times(BigDecimal.fromString("100"))
+        }
     }
 
     bd.save()

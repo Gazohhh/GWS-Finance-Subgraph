@@ -9,9 +9,9 @@ dataSources:
     name: OlympusStakingV1
     network: kovan
     source:
-      address: "0xe328b24d8cE30D35543c83688A089AF4cb17F8FC"
+      address: "0xdE084762C42C3CAc1299cc9da313fA70D8F0B319"
       abi: OlympusStakingV1
-      startBlock: 30136217
+      startBlock: 30181399
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -43,47 +43,14 @@ dataSources:
         - function: unstake(uint256,bool)
           handler: handleUnstake
       file: ./src/OlympusStakingV1.ts
-  #Staking Contract Helper
-  - kind: ethereum/contract
-    name: OlympusStakingV1Helper
-    network: kovan
-    source:
-      address: "0xa9BDFD43f205311f2E31b894a679AdED55670bE7"
-      abi: OlympusStakingV1Helper
-      startBlock: 30136221
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - OlympusStakingV1Helper
-      abis:
-        - name: OlympusStakingV1
-          file: ./abis/OlympusStakingV1.json
-        - name: OlympusStakingV1Helper
-          file: ./abis/OlympusStakingV1Helper.json
-        - name: sOlympusERC20
-          file: ./abis/sOlympusERC20.json
-        - name: OlympusERC20
-          file: ./abis/OlympusERC20.json
-        - name: UniswapV2Pair
-          file: ./abis/UniswapV2Pair.json
-        - name: DAIBondV1
-          file: ./abis/DAIBondV1.json
-        - name: OHMDAIBondV1
-          file: ./abis/OHMDAIBondV1.json
-      callHandlers:
-        - function: stake(uint256,address)
-          handler: handleStake
-      file: ./src/OlympusStakingV1Helper.ts
   #DAI Bond Contract V1
   - kind: ethereum/contract
     name: DAIBondV1
     network: kovan
     source:
-      address: "0x521c87D9fce11918Ba80d294a8218b09355D00a2"
+      address: "0x31c892A077dAD64b78b257e7C0ed9EB1CfCF9226"
       abi: DAIBondV1
-      startBlock: 30159026
+      startBlock: 30181672
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -113,9 +80,9 @@ dataSources:
     name: USDCBondV1
     network: kovan
     source:
-      address: "0x633A74c9a3350C1FFF81740fad456F8334f79BbE"
+      address: "0xDf4eDaE5C048d39fFCdC62c47014D1729bF181b7"
       abi: USDCBondV1
-      startBlock: 30159188
+      startBlock: 30181725
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -144,9 +111,9 @@ dataSources:
     name: OHMDAIBondV1
     network: kovan
     source:
-      address: "0x08CE7dE29AF9271e8ACb05D022fd2fE821F23978"
+      address: "0xD79d3c63b4c9a029c94F3E5BcfdD5aDae77f0513"
       abi: OHMDAIBondV1
-      startBlock: 30159108
+      startBlock: 30182057
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -177,9 +144,9 @@ dataSources:
     name: sOlympusERC20V1
     network: kovan
     source:
-      address: "0x03622d3245ad48a9949C773CbA3fE1c59e0D7d3B"
+      address: "0x220CB52ed7d598271Cd3494255eb49063C03C545"
       abi: sOlympusERC20
-      startBlock: 30136139
+      startBlock: 30181249
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
