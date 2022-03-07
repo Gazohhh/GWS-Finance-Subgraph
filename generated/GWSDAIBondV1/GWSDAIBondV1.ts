@@ -166,7 +166,7 @@ export class OwnershipPushed__Params {
   }
 }
 
-export class DAIBondV1__adjustmentResult {
+export class GWSDAIBondV1__adjustmentResult {
   value0: boolean;
   value1: BigInt;
   value2: BigInt;
@@ -198,7 +198,7 @@ export class DAIBondV1__adjustmentResult {
   }
 }
 
-export class DAIBondV1__bondInfoResult {
+export class GWSDAIBondV1__bondInfoResult {
   value0: BigInt;
   value1: BigInt;
   value2: BigInt;
@@ -221,7 +221,7 @@ export class DAIBondV1__bondInfoResult {
   }
 }
 
-export class DAIBondV1__termsResult {
+export class GWSDAIBondV1__termsResult {
   value0: BigInt;
   value1: BigInt;
   value2: BigInt;
@@ -257,9 +257,9 @@ export class DAIBondV1__termsResult {
   }
 }
 
-export class DAIBondV1 extends ethereum.SmartContract {
-  static bind(address: Address): DAIBondV1 {
-    return new DAIBondV1("DAIBondV1", address);
+export class GWSDAIBondV1 extends ethereum.SmartContract {
+  static bind(address: Address): GWSDAIBondV1 {
+    return new GWSDAIBondV1("GWSDAIBondV1", address);
   }
 
   DAO(): Address {
@@ -292,14 +292,14 @@ export class DAIBondV1 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  adjustment(): DAIBondV1__adjustmentResult {
+  adjustment(): GWSDAIBondV1__adjustmentResult {
     let result = super.call(
       "adjustment",
       "adjustment():(bool,uint256,uint256,uint256,uint256)",
       []
     );
 
-    return new DAIBondV1__adjustmentResult(
+    return new GWSDAIBondV1__adjustmentResult(
       result[0].toBoolean(),
       result[1].toBigInt(),
       result[2].toBigInt(),
@@ -308,7 +308,7 @@ export class DAIBondV1 extends ethereum.SmartContract {
     );
   }
 
-  try_adjustment(): ethereum.CallResult<DAIBondV1__adjustmentResult> {
+  try_adjustment(): ethereum.CallResult<GWSDAIBondV1__adjustmentResult> {
     let result = super.tryCall(
       "adjustment",
       "adjustment():(bool,uint256,uint256,uint256,uint256)",
@@ -319,7 +319,7 @@ export class DAIBondV1 extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new DAIBondV1__adjustmentResult(
+      new GWSDAIBondV1__adjustmentResult(
         value[0].toBoolean(),
         value[1].toBigInt(),
         value[2].toBigInt(),
@@ -348,14 +348,14 @@ export class DAIBondV1 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  bondInfo(param0: Address): DAIBondV1__bondInfoResult {
+  bondInfo(param0: Address): GWSDAIBondV1__bondInfoResult {
     let result = super.call(
       "bondInfo",
       "bondInfo(address):(uint256,uint256,uint256,uint256)",
       [ethereum.Value.fromAddress(param0)]
     );
 
-    return new DAIBondV1__bondInfoResult(
+    return new GWSDAIBondV1__bondInfoResult(
       result[0].toBigInt(),
       result[1].toBigInt(),
       result[2].toBigInt(),
@@ -365,7 +365,7 @@ export class DAIBondV1 extends ethereum.SmartContract {
 
   try_bondInfo(
     param0: Address
-  ): ethereum.CallResult<DAIBondV1__bondInfoResult> {
+  ): ethereum.CallResult<GWSDAIBondV1__bondInfoResult> {
     let result = super.tryCall(
       "bondInfo",
       "bondInfo(address):(uint256,uint256,uint256,uint256)",
@@ -376,7 +376,7 @@ export class DAIBondV1 extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new DAIBondV1__bondInfoResult(
+      new GWSDAIBondV1__bondInfoResult(
         value[0].toBigInt(),
         value[1].toBigInt(),
         value[2].toBigInt(),
@@ -747,14 +747,14 @@ export class DAIBondV1 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  terms(): DAIBondV1__termsResult {
+  terms(): GWSDAIBondV1__termsResult {
     let result = super.call(
       "terms",
       "terms():(uint256,uint256,uint256,uint256,uint256,uint256)",
       []
     );
 
-    return new DAIBondV1__termsResult(
+    return new GWSDAIBondV1__termsResult(
       result[0].toBigInt(),
       result[1].toBigInt(),
       result[2].toBigInt(),
@@ -764,7 +764,7 @@ export class DAIBondV1 extends ethereum.SmartContract {
     );
   }
 
-  try_terms(): ethereum.CallResult<DAIBondV1__termsResult> {
+  try_terms(): ethereum.CallResult<GWSDAIBondV1__termsResult> {
     let result = super.tryCall(
       "terms",
       "terms():(uint256,uint256,uint256,uint256,uint256,uint256)",
@@ -775,7 +775,7 @@ export class DAIBondV1 extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new DAIBondV1__termsResult(
+      new GWSDAIBondV1__termsResult(
         value[0].toBigInt(),
         value[1].toBigInt(),
         value[2].toBigInt(),

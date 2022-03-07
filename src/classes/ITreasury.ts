@@ -7,5 +7,5 @@ export class ITreasury {
     treasuryUsdcRiskFreeValue: BigDecimal;
     treasuryDaiMarketValue: BigDecimal;
     treasuryUsdcMarketValue: BigDecimal;
-    treasuryOhmDaiPOL: BigDecimal;
+    treasuryGwsDaiPOL: BigDecimal;
 }

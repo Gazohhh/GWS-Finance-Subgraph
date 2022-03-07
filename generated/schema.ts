@@ -86,7 +86,7 @@ export class DailyBond extends Entity {
   }
 }
 
-export class Ohmie extends Entity {
+export class Gwsie extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -96,19 +96,19 @@ export class Ohmie extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save Ohmie entity without an ID");
+    assert(id != null, "Cannot save Gwsie entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Ohmie entity with non-string ID. " +
+        "Cannot save Gwsie entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("Ohmie", id.toString(), this);
+      store.set("Gwsie", id.toString(), this);
     }
   }
 
-  static load(id: string): Ohmie | null {
-    return changetype<Ohmie | null>(store.get("Ohmie", id));
+  static load(id: string): Gwsie | null {
+    return changetype<Gwsie | null>(store.get("Gwsie", id));
   }
 
   get id(): string {
@@ -192,14 +192,14 @@ export class Ohmie extends Entity {
   }
 }
 
-export class OhmieBalance extends Entity {
+export class GwsieBalance extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("ohmie", Value.fromString(""));
-    this.set("sohmBalance", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("ohmBalance", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("gwsie", Value.fromString(""));
+    this.set("sgwsBalance", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("gwsBalance", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("bondBalance", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("dollarBalance", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("timestamp", Value.fromBigInt(BigInt.zero()));
@@ -207,19 +207,19 @@ export class OhmieBalance extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save OhmieBalance entity without an ID");
+    assert(id != null, "Cannot save GwsieBalance entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save OhmieBalance entity with non-string ID. " +
+        "Cannot save GwsieBalance entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("OhmieBalance", id.toString(), this);
+      store.set("GwsieBalance", id.toString(), this);
     }
   }
 
-  static load(id: string): OhmieBalance | null {
-    return changetype<OhmieBalance | null>(store.get("OhmieBalance", id));
+  static load(id: string): GwsieBalance | null {
+    return changetype<GwsieBalance | null>(store.get("GwsieBalance", id));
   }
 
   get id(): string {
@@ -231,31 +231,31 @@ export class OhmieBalance extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get ohmie(): string {
-    let value = this.get("ohmie");
+  get gwsie(): string {
+    let value = this.get("gwsie");
     return value!.toString();
   }
 
-  set ohmie(value: string) {
-    this.set("ohmie", Value.fromString(value));
+  set gwsie(value: string) {
+    this.set("gwsie", Value.fromString(value));
   }
 
-  get sohmBalance(): BigDecimal {
-    let value = this.get("sohmBalance");
+  get sgwsBalance(): BigDecimal {
+    let value = this.get("sgwsBalance");
     return value!.toBigDecimal();
   }
 
-  set sohmBalance(value: BigDecimal) {
-    this.set("sohmBalance", Value.fromBigDecimal(value));
+  set sgwsBalance(value: BigDecimal) {
+    this.set("sgwsBalance", Value.fromBigDecimal(value));
   }
 
-  get ohmBalance(): BigDecimal {
-    let value = this.get("ohmBalance");
+  get gwsBalance(): BigDecimal {
+    let value = this.get("gwsBalance");
     return value!.toBigDecimal();
   }
 
-  set ohmBalance(value: BigDecimal) {
-    this.set("ohmBalance", Value.fromBigDecimal(value));
+  set gwsBalance(value: BigDecimal) {
+    this.set("gwsBalance", Value.fromBigDecimal(value));
   }
 
   get bondBalance(): BigDecimal {
@@ -326,7 +326,7 @@ export class Deposit extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("transaction", Value.fromString(""));
-    this.set("ohmie", Value.fromString(""));
+    this.set("gwsie", Value.fromString(""));
     this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("maxPremium", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("token", Value.fromString(""));
@@ -369,13 +369,13 @@ export class Deposit extends Entity {
     this.set("transaction", Value.fromString(value));
   }
 
-  get ohmie(): string {
-    let value = this.get("ohmie");
+  get gwsie(): string {
+    let value = this.get("gwsie");
     return value!.toString();
   }
 
-  set ohmie(value: string) {
-    this.set("ohmie", Value.fromString(value));
+  set gwsie(value: string) {
+    this.set("gwsie", Value.fromString(value));
   }
 
   get amount(): BigDecimal {
@@ -473,8 +473,8 @@ export class Redemption extends Entity {
     }
   }
 
-  get ohmie(): string | null {
-    let value = this.get("ohmie");
+  get gwsie(): string | null {
+    let value = this.get("gwsie");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -482,11 +482,11 @@ export class Redemption extends Entity {
     }
   }
 
-  set ohmie(value: string | null) {
+  set gwsie(value: string | null) {
     if (!value) {
-      this.unset("ohmie");
+      this.unset("gwsie");
     } else {
-      this.set("ohmie", Value.fromString(<string>value));
+      this.set("gwsie", Value.fromString(<string>value));
     }
   }
 
@@ -531,7 +531,7 @@ export class Stake extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("transaction", Value.fromString(""));
-    this.set("ohmie", Value.fromString(""));
+    this.set("gwsie", Value.fromString(""));
     this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("timestamp", Value.fromBigInt(BigInt.zero()));
   }
@@ -571,13 +571,13 @@ export class Stake extends Entity {
     this.set("transaction", Value.fromString(value));
   }
 
-  get ohmie(): string {
-    let value = this.get("ohmie");
+  get gwsie(): string {
+    let value = this.get("gwsie");
     return value!.toString();
   }
 
-  set ohmie(value: string) {
-    this.set("ohmie", Value.fromString(value));
+  set gwsie(value: string) {
+    this.set("gwsie", Value.fromString(value));
   }
 
   get amount(): BigDecimal {
@@ -605,7 +605,7 @@ export class Unstake extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("transaction", Value.fromString(""));
-    this.set("ohmie", Value.fromString(""));
+    this.set("gwsie", Value.fromString(""));
     this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("timestamp", Value.fromBigInt(BigInt.zero()));
   }
@@ -645,13 +645,13 @@ export class Unstake extends Entity {
     this.set("transaction", Value.fromString(value));
   }
 
-  get ohmie(): string {
-    let value = this.get("ohmie");
+  get gwsie(): string {
+    let value = this.get("gwsie");
     return value!.toString();
   }
 
-  set ohmie(value: string) {
-    this.set("ohmie", Value.fromString(value));
+  set gwsie(value: string) {
+    this.set("gwsie", Value.fromString(value));
   }
 
   get amount(): BigDecimal {
@@ -680,7 +680,7 @@ export class Rebase extends Entity {
 
     this.set("transaction", Value.fromString(""));
     this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("stakedOhms", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("stakedGwss", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("percentage", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("contract", Value.fromString(""));
     this.set("timestamp", Value.fromBigInt(BigInt.zero()));
@@ -731,13 +731,13 @@ export class Rebase extends Entity {
     this.set("amount", Value.fromBigDecimal(value));
   }
 
-  get stakedOhms(): BigDecimal {
-    let value = this.get("stakedOhms");
+  get stakedGwss(): BigDecimal {
+    let value = this.get("stakedGwss");
     return value!.toBigDecimal();
   }
 
-  set stakedOhms(value: BigDecimal) {
-    this.set("stakedOhms", Value.fromBigDecimal(value));
+  set stakedGwss(value: BigDecimal) {
+    this.set("stakedGwss", Value.fromBigDecimal(value));
   }
 
   get percentage(): BigDecimal {
@@ -993,16 +993,16 @@ export class ProtocolMetric extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("timestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("ohmCirculatingSupply", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("sOhmCirculatingSupply", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("gwsCirculatingSupply", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("sGwsCirculatingSupply", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("totalSupply", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("ohmPrice", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("gwsPrice", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("marketCap", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("totalValueLocked", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("treasuryRiskFreeValue", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("treasuryMarketValue", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("nextEpochRebase", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("nextDistributedOhm", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("nextDistributedGws", Value.fromBigDecimal(BigDecimal.zero()));
     this.set(
       "treasuryDaiRiskFreeValue",
       Value.fromBigDecimal(BigDecimal.zero())
@@ -1017,9 +1017,9 @@ export class ProtocolMetric extends Entity {
       Value.fromBigDecimal(BigDecimal.zero())
     );
     this.set("currentAPY", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("treasuryOhmDaiPOL", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("treasuryOhmLusdPOL", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("treasuryOhmEthPOL", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("treasuryGwsDaiPOL", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("treasuryGwsLusdPOL", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("treasuryGwsEthPOL", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("holders", Value.fromBigInt(BigInt.zero()));
   }
 
@@ -1058,22 +1058,22 @@ export class ProtocolMetric extends Entity {
     this.set("timestamp", Value.fromBigInt(value));
   }
 
-  get ohmCirculatingSupply(): BigDecimal {
-    let value = this.get("ohmCirculatingSupply");
+  get gwsCirculatingSupply(): BigDecimal {
+    let value = this.get("gwsCirculatingSupply");
     return value!.toBigDecimal();
   }
 
-  set ohmCirculatingSupply(value: BigDecimal) {
-    this.set("ohmCirculatingSupply", Value.fromBigDecimal(value));
+  set gwsCirculatingSupply(value: BigDecimal) {
+    this.set("gwsCirculatingSupply", Value.fromBigDecimal(value));
   }
 
-  get sOhmCirculatingSupply(): BigDecimal {
-    let value = this.get("sOhmCirculatingSupply");
+  get sGwsCirculatingSupply(): BigDecimal {
+    let value = this.get("sGwsCirculatingSupply");
     return value!.toBigDecimal();
   }
 
-  set sOhmCirculatingSupply(value: BigDecimal) {
-    this.set("sOhmCirculatingSupply", Value.fromBigDecimal(value));
+  set sGwsCirculatingSupply(value: BigDecimal) {
+    this.set("sGwsCirculatingSupply", Value.fromBigDecimal(value));
   }
 
   get totalSupply(): BigDecimal {
@@ -1085,13 +1085,13 @@ export class ProtocolMetric extends Entity {
     this.set("totalSupply", Value.fromBigDecimal(value));
   }
 
-  get ohmPrice(): BigDecimal {
-    let value = this.get("ohmPrice");
+  get gwsPrice(): BigDecimal {
+    let value = this.get("gwsPrice");
     return value!.toBigDecimal();
   }
 
-  set ohmPrice(value: BigDecimal) {
-    this.set("ohmPrice", Value.fromBigDecimal(value));
+  set gwsPrice(value: BigDecimal) {
+    this.set("gwsPrice", Value.fromBigDecimal(value));
   }
 
   get marketCap(): BigDecimal {
@@ -1139,13 +1139,13 @@ export class ProtocolMetric extends Entity {
     this.set("nextEpochRebase", Value.fromBigDecimal(value));
   }
 
-  get nextDistributedOhm(): BigDecimal {
-    let value = this.get("nextDistributedOhm");
+  get nextDistributedGws(): BigDecimal {
+    let value = this.get("nextDistributedGws");
     return value!.toBigDecimal();
   }
 
-  set nextDistributedOhm(value: BigDecimal) {
-    this.set("nextDistributedOhm", Value.fromBigDecimal(value));
+  set nextDistributedGws(value: BigDecimal) {
+    this.set("nextDistributedGws", Value.fromBigDecimal(value));
   }
 
   get treasuryDaiRiskFreeValue(): BigDecimal {
@@ -1346,31 +1346,31 @@ export class ProtocolMetric extends Entity {
     }
   }
 
-  get treasuryOhmDaiPOL(): BigDecimal {
-    let value = this.get("treasuryOhmDaiPOL");
+  get treasuryGwsDaiPOL(): BigDecimal {
+    let value = this.get("treasuryGwsDaiPOL");
     return value!.toBigDecimal();
   }
 
-  set treasuryOhmDaiPOL(value: BigDecimal) {
-    this.set("treasuryOhmDaiPOL", Value.fromBigDecimal(value));
+  set treasuryGwsDaiPOL(value: BigDecimal) {
+    this.set("treasuryGwsDaiPOL", Value.fromBigDecimal(value));
   }
 
-  get treasuryOhmLusdPOL(): BigDecimal {
-    let value = this.get("treasuryOhmLusdPOL");
+  get treasuryGwsLusdPOL(): BigDecimal {
+    let value = this.get("treasuryGwsLusdPOL");
     return value!.toBigDecimal();
   }
 
-  set treasuryOhmLusdPOL(value: BigDecimal) {
-    this.set("treasuryOhmLusdPOL", Value.fromBigDecimal(value));
+  set treasuryGwsLusdPOL(value: BigDecimal) {
+    this.set("treasuryGwsLusdPOL", Value.fromBigDecimal(value));
   }
 
-  get treasuryOhmEthPOL(): BigDecimal {
-    let value = this.get("treasuryOhmEthPOL");
+  get treasuryGwsEthPOL(): BigDecimal {
+    let value = this.get("treasuryGwsEthPOL");
     return value!.toBigDecimal();
   }
 
-  set treasuryOhmEthPOL(value: BigDecimal) {
-    this.set("treasuryOhmEthPOL", Value.fromBigDecimal(value));
+  set treasuryGwsEthPOL(value: BigDecimal) {
+    this.set("treasuryGwsEthPOL", Value.fromBigDecimal(value));
   }
 
   get holders(): BigInt {
@@ -1518,12 +1518,12 @@ export class BondDiscount extends Entity {
 
     this.set("timestamp", Value.fromBigInt(BigInt.zero()));
     this.set("dai_discount", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("ohmdai_discount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("gwsdai_discount", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("frax_discount", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("ohmfrax_discount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("gwsfrax_discount", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("eth_discount", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("lusd_discount", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("ohmlusd_discount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("gwslusd_discount", Value.fromBigDecimal(BigDecimal.zero()));
   }
 
   save(): void {
@@ -1570,13 +1570,13 @@ export class BondDiscount extends Entity {
     this.set("dai_discount", Value.fromBigDecimal(value));
   }
 
-  get ohmdai_discount(): BigDecimal {
-    let value = this.get("ohmdai_discount");
+  get gwsdai_discount(): BigDecimal {
+    let value = this.get("gwsdai_discount");
     return value!.toBigDecimal();
   }
 
-  set ohmdai_discount(value: BigDecimal) {
-    this.set("ohmdai_discount", Value.fromBigDecimal(value));
+  set gwsdai_discount(value: BigDecimal) {
+    this.set("gwsdai_discount", Value.fromBigDecimal(value));
   }
 
   get frax_discount(): BigDecimal {
@@ -1588,13 +1588,13 @@ export class BondDiscount extends Entity {
     this.set("frax_discount", Value.fromBigDecimal(value));
   }
 
-  get ohmfrax_discount(): BigDecimal {
-    let value = this.get("ohmfrax_discount");
+  get gwsfrax_discount(): BigDecimal {
+    let value = this.get("gwsfrax_discount");
     return value!.toBigDecimal();
   }
 
-  set ohmfrax_discount(value: BigDecimal) {
-    this.set("ohmfrax_discount", Value.fromBigDecimal(value));
+  set gwsfrax_discount(value: BigDecimal) {
+    this.set("gwsfrax_discount", Value.fromBigDecimal(value));
   }
 
   get eth_discount(): BigDecimal {
@@ -1615,12 +1615,12 @@ export class BondDiscount extends Entity {
     this.set("lusd_discount", Value.fromBigDecimal(value));
   }
 
-  get ohmlusd_discount(): BigDecimal {
-    let value = this.get("ohmlusd_discount");
+  get gwslusd_discount(): BigDecimal {
+    let value = this.get("gwslusd_discount");
     return value!.toBigDecimal();
   }
 
-  set ohmlusd_discount(value: BigDecimal) {
-    this.set("ohmlusd_discount", Value.fromBigDecimal(value));
+  set gwslusd_discount(value: BigDecimal) {
+    this.set("gwslusd_discount", Value.fromBigDecimal(value));
   }
 }

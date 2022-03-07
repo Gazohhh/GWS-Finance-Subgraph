@@ -1,6 +1,6 @@
-import { SUSHI_OHMDAI_PAIR, SUSHI_USDC_ETH_PAIR } from './Constants'
+import { SUSHI_GWSDAI_PAIR, SUSHI_USDC_ETH_PAIR } from './Constants'
 import { Address, BigDecimal, BigInt, log } from '@graphprotocol/graph-ts'
-import { UniswapV2Pair } from '../../generated/OlympusStakingV1/UniswapV2Pair';
+import { UniswapV2Pair } from '../../generated/GenerationalWealthSocietyStakingV1/UniswapV2Pair';
 import { toDecimal } from './Decimals'
 
 let BIG_DECIMAL_1E12 = BigDecimal.fromString('1e12')
@@ -21,8 +21,8 @@ export function getETHUSDRate(): BigDecimal {
     return rate;
 }
 
-export function getOHMUSDRate(): BigDecimal {
-    let pair = UniswapV2Pair.bind(Address.fromString(SUSHI_OHMDAI_PAIR))
+export function getGWSUSDRate(): BigDecimal {
+    let pair = UniswapV2Pair.bind(Address.fromString(SUSHI_GWSDAI_PAIR))
     let reserves = pair.try_getReserves()
     let marketPrice: BigDecimal = BigDecimal.fromString("0");
     if (reserves.reverted == false) {
@@ -31,12 +31,12 @@ export function getOHMUSDRate(): BigDecimal {
         let rate = reserve1.div(reserve0).div(BIG_DECIMAL_1E9);
         marketPrice = rate;
     }
-    log.warning("getOHMUSDRate reverted {}", [reserves.reverted.toString()]);
-    log.warning("getOHMUSDRate marketPrice {}", [marketPrice.toString()])
+    log.warning("getGWSUSDRate reverted {}", [reserves.reverted.toString()]);
+    log.warning("getGWSUSDRate marketPrice {}", [marketPrice.toString()])
     return marketPrice;
 }
 
-//(slp_treasury/slp_supply)*(2*sqrt(lp_dai * lp_ohm))
+//(slp_treasury/slp_supply)*(2*sqrt(lp_dai * lp_gws))
 export function getDiscountedPairUSD(lp_amount: BigInt, pair_adress: string): BigDecimal {
     let pair = UniswapV2Pair.bind(Address.fromString(pair_adress))
 
@@ -63,8 +63,8 @@ export function getPairUSD(lp_amount: BigInt, pair_adress: string): BigDecimal {
         let reserve1 = reserves.value.value1;
         let supply = total_lp.reverted ? BigInt.fromString("0") : BigInt.fromString(total_lp.value.toString());
         let ownedLP = toDecimal(lp_amount, 18).div(toDecimal(supply, 18))
-        let ohm_value = toDecimal(reserve0, 9).times(getOHMUSDRate())
-        let total_lp_usd = ohm_value.plus(toDecimal(reserve1, 18))
+        let gws_value = toDecimal(reserve0, 9).times(getGWSUSDRate())
+        let total_lp_usd = gws_value.plus(toDecimal(reserve1, 18))
         return ownedLP.times(total_lp_usd)
     }
     log.warning("getPairUSD reverted {}", [reserves.reverted.toString()])

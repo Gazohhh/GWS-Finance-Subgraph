@@ -1,36 +1,36 @@
 specVersion: 0.0.2
-description: Olympus DAO Subgraph
-repository: https://github.com/OlympusDAO/olympus-subgraph
+description: GenerationalWealthSociety DAO Subgraph
+repository: https://github.com/GenerationalWealthSocietyDAO/generationalWealthSociety-subgraph
 schema:
   file: ./schema.graphql
 dataSources:
   #Staking Contract V1
   - kind: ethereum/contract
-    name: OlympusStakingV1
+    name: GenerationalWealthSocietyStakingV1
     network: kovan
     source:
-      address: "0xdE084762C42C3CAc1299cc9da313fA70D8F0B319"
-      abi: OlympusStakingV1
-      startBlock: 30181399
+      address: "0xaF73f0bd55be48F08a7eE31dd3B76Ba0aa7d11A3"
+      abi: GenerationalWealthSocietyStakingV1
+      startBlock: 30242551
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - OlympusStakingV1
+        - GenerationalWealthSocietyStakingV1
       abis:
-        - name: OlympusStakingV1
-          file: ./abis/OlympusStakingV1.json
-        - name: sOlympusERC20
-          file: ./abis/sOlympusERC20.json
-        - name: OlympusERC20
-          file: ./abis/OlympusERC20.json
+        - name: GenerationalWealthSocietyStakingV1
+          file: ./abis/GenerationalWealthSocietyStakingV1.json
+        - name: sGenerationalWealthSocietyERC20
+          file: ./abis/sGenerationalWealthSocietyERC20.json
+        - name: GenerationalWealthSocietyERC20
+          file: ./abis/GenerationalWealthSocietyERC20.json
         - name: UniswapV2Pair
           file: ./abis/UniswapV2Pair.json
         - name: DAIBondV1
           file: ./abis/DAIBondV1.json
-        - name: OHMDAIBondV1
-          file: ./abis/OHMDAIBondV1.json
+        - name: GWSDAIBondV1
+          file: ./abis/GWSDAIBondV1.json
         - name: CirculatingSupply
           file: ./abis/CirculatingSupply.json
         - name: BondingCalculator
@@ -42,15 +42,15 @@ dataSources:
           handler: handleStake
         - function: unstake(uint256,bool)
           handler: handleUnstake
-      file: ./src/OlympusStakingV1.ts
+      file: ./src/GenerationalWealthSocietyStakingV1.ts
   #DAI Bond Contract V1
   - kind: ethereum/contract
     name: DAIBondV1
     network: kovan
     source:
-      address: "0x31c892A077dAD64b78b257e7C0ed9EB1CfCF9226"
+      address: "0x859C11a5F77F5c8bEbB293AAC1f0d105EcC6C18F"
       abi: DAIBondV1
-      startBlock: 30181672
+      startBlock: 30242660
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -58,12 +58,12 @@ dataSources:
       entities:
         - DAIBondDeposit
       abis:
-        - name: OlympusStakingV1
-          file: ./abis/OlympusStakingV1.json
-        - name: sOlympusERC20
-          file: ./abis/sOlympusERC20.json
-        - name: OlympusERC20
-          file: ./abis/OlympusERC20.json
+        - name: GenerationalWealthSocietyStakingV1
+          file: ./abis/GenerationalWealthSocietyStakingV1.json
+        - name: sGenerationalWealthSocietyERC20
+          file: ./abis/sGenerationalWealthSocietyERC20.json
+        - name: GenerationalWealthSocietyERC20
+          file: ./abis/GenerationalWealthSocietyERC20.json
         - name: UniswapV2Pair
           file: ./abis/UniswapV2Pair.json
         - name: DAIBondV1
@@ -80,9 +80,9 @@ dataSources:
     name: USDCBondV1
     network: kovan
     source:
-      address: "0xDf4eDaE5C048d39fFCdC62c47014D1729bF181b7"
+      address: "0x770Ca093030CF071a158a1868E2107e2Ee9B5102"
       abi: USDCBondV1
-      startBlock: 30181725
+      startBlock: 30242705
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -90,12 +90,12 @@ dataSources:
       entities:
         - USDCBondDeposit
       abis:
-        - name: OlympusStakingV1
-          file: ./abis/OlympusStakingV1.json
-        - name: sOlympusERC20
-          file: ./abis/sOlympusERC20.json
-        - name: OlympusERC20
-          file: ./abis/OlympusERC20.json
+        - name: GenerationalWealthSocietyStakingV1
+          file: ./abis/GenerationalWealthSocietyStakingV1.json
+        - name: sGenerationalWealthSocietyERC20
+          file: ./abis/sGenerationalWealthSocietyERC20.json
+        - name: GenerationalWealthSocietyERC20
+          file: ./abis/GenerationalWealthSocietyERC20.json
         - name: UniswapV2Pair
           file: ./abis/UniswapV2Pair.json
         - name: USDCBondV1
@@ -106,61 +106,61 @@ dataSources:
         - function: redeem(address,bool)
           handler: handleRedeem
       file: ./src/USDCBondV1.ts
-  #OHM DAI LP Bond Contract
+  #GWS DAI LP Bond Contract
   - kind: ethereum/contract
-    name: OHMDAIBondV1
+    name: GWSDAIBondV1
     network: kovan
     source:
-      address: "0xD79d3c63b4c9a029c94F3E5BcfdD5aDae77f0513"
-      abi: OHMDAIBondV1
-      startBlock: 30182057
+      address: "0xa16b777eEaD3c0C805D489681Cf43DD8cc4523ca"
+      abi: GWSDAIBondV1
+      startBlock: 30242758
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - OHMDAIBondV1
+        - GWSDAIBondV1
       abis:
-        - name: OlympusStakingV1
-          file: ./abis/OlympusStakingV1.json
-        - name: sOlympusERC20
-          file: ./abis/sOlympusERC20.json
-        - name: OlympusERC20
-          file: ./abis/OlympusERC20.json
+        - name: GenerationalWealthSocietyStakingV1
+          file: ./abis/GenerationalWealthSocietyStakingV1.json
+        - name: sGenerationalWealthSocietyERC20
+          file: ./abis/sGenerationalWealthSocietyERC20.json
+        - name: GenerationalWealthSocietyERC20
+          file: ./abis/GenerationalWealthSocietyERC20.json
         - name: UniswapV2Pair
           file: ./abis/UniswapV2Pair.json
         - name: DAIBondV1
           file: ./abis/DAIBondV1.json
-        - name: OHMDAIBondV1
-          file: ./abis/OHMDAIBondV1.json
+        - name: GWSDAIBondV1
+          file: ./abis/GWSDAIBondV1.json
       callHandlers:
         - function: deposit(uint256,uint256,address)
           handler: handleDeposit
         - function: redeem(address,bool)
           handler: handleRedeem
-      file: ./src/OHMDAIBondV1.ts
-  #sOHM
+      file: ./src/GWSDAIBondV1.ts
+  #sGWS
   - kind: ethereum/contract
-    name: sOlympusERC20V1
+    name: sGenerationalWealthSocietyERC20V1
     network: kovan
     source:
-      address: "0x220CB52ed7d598271Cd3494255eb49063C03C545"
-      abi: sOlympusERC20
-      startBlock: 30181249
+      address: "0xa4B206B5c69b23F4D6DF608Cbf8Ac683063fc50C"
+      abi: sGenerationalWealthSocietyERC20
+      startBlock: 30242514
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - sOlympusERC20V1
+        - sGenerationalWealthSocietyERC20V1
       abis:
-        - name: sOlympusERC20
-          file: ./abis/sOlympusERC20.json
-        - name: OlympusERC20
-          file: ./abis/OlympusERC20.json
+        - name: sGenerationalWealthSocietyERC20
+          file: ./abis/sGenerationalWealthSocietyERC20.json
+        - name: GenerationalWealthSocietyERC20
+          file: ./abis/GenerationalWealthSocietyERC20.json
         - name: UniswapV2Pair
           file: ./abis/UniswapV2Pair.json
       callHandlers:
         - function: rebase(uint256,uint256)
           handler: rebaseFunction
-      file: ./src/sOlympusERC20V1.ts
+      file: ./src/sGenerationalWealthSocietyERC20V1.ts

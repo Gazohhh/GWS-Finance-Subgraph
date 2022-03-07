@@ -277,14 +277,14 @@ export class USDCBondV1 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  OHM(): Address {
-    let result = super.call("OHM", "OHM():(address)", []);
+  GWS(): Address {
+    let result = super.call("GWS", "GWS():(address)", []);
 
     return result[0].toAddress();
   }
 
-  try_OHM(): ethereum.CallResult<Address> {
-    let result = super.tryCall("OHM", "OHM():(address)", []);
+  try_GWS(): ethereum.CallResult<Address> {
+    let result = super.tryCall("GWS", "GWS():(address)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -849,7 +849,7 @@ export class ConstructorCall__Inputs {
     this._call = call;
   }
 
-  get _OHM(): Address {
+  get _GWS(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 

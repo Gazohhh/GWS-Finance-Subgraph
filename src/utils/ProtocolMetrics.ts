@@ -1,16 +1,16 @@
 import { Address, BigDecimal, BigInt, log } from '@graphprotocol/graph-ts'
-import { OlympusERC20 } from '../../generated/OlympusStakingV1/OlympusERC20';
-import { sOlympusERC20 } from '../../generated/OlympusStakingV1/sOlympusERC20';
-import { CirculatingSupply } from '../../generated/OlympusStakingV1/CirculatingSupply';
-import { ERC20 } from '../../generated/OlympusStakingV1/ERC20';
-import { UniswapV2Pair } from '../../generated/OlympusStakingV1/UniswapV2Pair';
-import { OlympusStakingV1 } from '../../generated/OlympusStakingV1/OlympusStakingV1';
+import { GenerationalWealthSocietyERC20 } from '../../generated/GenerationalWealthSocietyStakingV1/GenerationalWealthSocietyERC20';
+import { sGenerationalWealthSocietyERC20 } from '../../generated/GenerationalWealthSocietyStakingV1/sGenerationalWealthSocietyERC20';
+import { CirculatingSupply } from '../../generated/GenerationalWealthSocietyStakingV1/CirculatingSupply';
+import { ERC20 } from '../../generated/GenerationalWealthSocietyStakingV1/ERC20';
+import { UniswapV2Pair } from '../../generated/GenerationalWealthSocietyStakingV1/UniswapV2Pair';
+import { GenerationalWealthSocietyStakingV1 } from '../../generated/GenerationalWealthSocietyStakingV1/GenerationalWealthSocietyStakingV1';
 
 import { ProtocolMetric, Transaction } from '../../generated/schema'
-import { CIRCULATING_SUPPLY_CONTRACT, DAI_ERC20_CONTRACT, OHMDAISLPBOND_CONTRACT_BLOCK, OHM_ERC20_CONTRACT, SOHM_ERC20_CONTRACT, STAKING_CONTRACT, SUSHI_OHMDAI_PAIR, TREASURY_ADDRESS, USDC_ERC20_CONTRACT } from './Constants';
+import { CIRCULATING_SUPPLY_CONTRACT, DAI_ERC20_CONTRACT, GWSDAISLPBOND_CONTRACT_BLOCK, GWS_ERC20_CONTRACT, SGWS_ERC20_CONTRACT, STAKING_CONTRACT, SUSHI_GWSDAI_PAIR, TREASURY_ADDRESS, USDC_ERC20_CONTRACT } from './Constants';
 import { dayFromTimestamp } from './Dates';
 import { toDecimal } from './Decimals';
-import { getOHMUSDRate, getDiscountedPairUSD, getPairUSD } from './Price';
+import { getGWSUSDRate, getDiscountedPairUSD, getPairUSD } from './Price';
 import { getHolderAux } from './AuxHolder';
 import { updateBondDiscounts } from './BondDiscounts';
 import { ITreasury } from '../classes/ITreasury';
@@ -22,23 +22,23 @@ export function loadOrCreateProtocolMetric(timestamp: BigInt): ProtocolMetric {
     if (protocolMetric == null) {
         protocolMetric = new ProtocolMetric(dayTimestamp)
         protocolMetric.timestamp = timestamp
-        protocolMetric.ohmCirculatingSupply = BigDecimal.fromString("0")
-        protocolMetric.sOhmCirculatingSupply = BigDecimal.fromString("0")
+        protocolMetric.gwsCirculatingSupply = BigDecimal.fromString("0")
+        protocolMetric.sGwsCirculatingSupply = BigDecimal.fromString("0")
         protocolMetric.totalSupply = BigDecimal.fromString("0")
-        protocolMetric.ohmPrice = BigDecimal.fromString("0")
+        protocolMetric.gwsPrice = BigDecimal.fromString("0")
         protocolMetric.marketCap = BigDecimal.fromString("0")
         protocolMetric.totalValueLocked = BigDecimal.fromString("0")
         protocolMetric.treasuryRiskFreeValue = BigDecimal.fromString("0")
         protocolMetric.treasuryMarketValue = BigDecimal.fromString("0")
         protocolMetric.nextEpochRebase = BigDecimal.fromString("0")
-        protocolMetric.nextDistributedOhm = BigDecimal.fromString("0")
+        protocolMetric.nextDistributedGws = BigDecimal.fromString("0")
         protocolMetric.currentAPY = BigDecimal.fromString("0")
         protocolMetric.treasuryDaiRiskFreeValue = BigDecimal.fromString("0")
         protocolMetric.treasuryDaiMarketValue = BigDecimal.fromString("0")
         protocolMetric.treasuryUsdcMarketValue = BigDecimal.fromString("0")
-        protocolMetric.treasuryOhmDaiPOL = BigDecimal.fromString("0")
-        protocolMetric.treasuryOhmLusdPOL = BigDecimal.fromString("0")
-        protocolMetric.treasuryOhmEthPOL = BigDecimal.fromString("0")
+        protocolMetric.treasuryGwsDaiPOL = BigDecimal.fromString("0")
+        protocolMetric.treasuryGwsLusdPOL = BigDecimal.fromString("0")
+        protocolMetric.treasuryGwsEthPOL = BigDecimal.fromString("0")
         protocolMetric.holders = BigInt.fromI32(0)
 
         protocolMetric.save()
@@ -48,8 +48,8 @@ export function loadOrCreateProtocolMetric(timestamp: BigInt): ProtocolMetric {
 
 
 function getTotalSupply(): BigDecimal {
-    const ohm_contract = OlympusERC20.bind(Address.fromString(OHM_ERC20_CONTRACT))
-    const trySupply = ohm_contract.try_totalSupply();
+    const gws_contract = GenerationalWealthSocietyERC20.bind(Address.fromString(GWS_ERC20_CONTRACT))
+    const trySupply = gws_contract.try_totalSupply();
     const supply = trySupply.reverted ? BigInt.fromString("0") : trySupply.value;
     const total_supply = toDecimal(supply, 9)
     log.warning("Total Supply {}", [total_supply.toString()])
@@ -59,26 +59,26 @@ function getTotalSupply(): BigDecimal {
 function getCirculatingSupply(total_supply: BigDecimal): BigDecimal {
     let circ_supply = BigDecimal.fromString("0")
     let circulatingsupply_contract = CirculatingSupply.bind(Address.fromString(CIRCULATING_SUPPLY_CONTRACT))
-    circ_supply = toDecimal(circulatingsupply_contract.OHMCirculatingSupply(), 9)
+    circ_supply = toDecimal(circulatingsupply_contract.GWSCirculatingSupply(), 9)
 
     log.warning("Circulating Supply {}", [total_supply.toString()])
     return circ_supply
 }
 
-function getSOHMSupply(): BigDecimal {
-    let sohm_supply = BigDecimal.fromString("0")
+function getSGWSSupply(): BigDecimal {
+    let sgws_supply = BigDecimal.fromString("0")
 
-    let sohm_contract_v1 = sOlympusERC20.bind(Address.fromString(SOHM_ERC20_CONTRACT))
-    sohm_supply = toDecimal(sohm_contract_v1.circulatingSupply(), 9)
+    let sgws_contract_v1 = sGenerationalWealthSocietyERC20.bind(Address.fromString(SGWS_ERC20_CONTRACT))
+    sgws_supply = toDecimal(sgws_contract_v1.circulatingSupply(), 9)
 
-    log.warning("sOHM Supply {}", [sohm_supply.toString()])
-    return sohm_supply
+    log.warning("sGWS Supply {}", [sgws_supply.toString()])
+    return sgws_supply
 }
 
 function getMV_RFV(transaction: Transaction): ITreasury {
     let daiERC20 = ERC20.bind(Address.fromString(DAI_ERC20_CONTRACT))
     let usdcERC20 = ERC20.bind(Address.fromString(USDC_ERC20_CONTRACT))
-    let ohmdaiPair = UniswapV2Pair.bind(Address.fromString(SUSHI_OHMDAI_PAIR))
+    let gwsdaiPair = UniswapV2Pair.bind(Address.fromString(SUSHI_GWSDAI_PAIR))
     let treasury_address = TREASURY_ADDRESS;
 
     // DAI
@@ -91,62 +91,62 @@ function getMV_RFV(transaction: Transaction): ITreasury {
     let usdcBalance = usdcTryBalance.reverted ? BigInt.fromString("0") : usdcTryBalance.value;
     log.warning("usdcBalance Value {}", [usdcBalance.toString()])
 
-    // OHM-DAI
-    let ohmdai_value = BigDecimal.fromString("0");
-    let ohmdai_rfv = BigDecimal.fromString("0");
-    let ohmdaiPOL = BigDecimal.fromString("0");
-    if (transaction.blockNumber.gt(BigInt.fromString(OHMDAISLPBOND_CONTRACT_BLOCK))) {
-        let ohmdaiSushiTryBalance = ohmdaiPair.try_balanceOf(Address.fromString(treasury_address))
-        let ohmdaiSushiBalance = ohmdaiSushiTryBalance.reverted ? BigInt.fromString("0") : ohmdaiSushiTryBalance.value;
-        let ohmdaiBalance = ohmdaiSushiBalance;
-        let ohmdaiPairTrySupply = ohmdaiPair.try_totalSupply()
-        let ohmdaiPairSupply = ohmdaiPairTrySupply.reverted ? BigInt.fromString("0") : ohmdaiPairTrySupply.value;
-        let ohmdaiTotalLP = toDecimal(ohmdaiPairSupply, 18)
-        ohmdaiPOL = toDecimal(ohmdaiBalance, 18).div(ohmdaiTotalLP).times(BigDecimal.fromString("100"))
-        ohmdai_value = getPairUSD(ohmdaiBalance, SUSHI_OHMDAI_PAIR)
-        ohmdai_rfv = getDiscountedPairUSD(ohmdaiBalance, SUSHI_OHMDAI_PAIR)
+    // GWS-DAI
+    let gwsdai_value = BigDecimal.fromString("0");
+    let gwsdai_rfv = BigDecimal.fromString("0");
+    let gwsdaiPOL = BigDecimal.fromString("0");
+    if (transaction.blockNumber.gt(BigInt.fromString(GWSDAISLPBOND_CONTRACT_BLOCK))) {
+        let gwsdaiSushiTryBalance = gwsdaiPair.try_balanceOf(Address.fromString(treasury_address))
+        let gwsdaiSushiBalance = gwsdaiSushiTryBalance.reverted ? BigInt.fromString("0") : gwsdaiSushiTryBalance.value;
+        let gwsdaiBalance = gwsdaiSushiBalance;
+        let gwsdaiPairTrySupply = gwsdaiPair.try_totalSupply()
+        let gwsdaiPairSupply = gwsdaiPairTrySupply.reverted ? BigInt.fromString("0") : gwsdaiPairTrySupply.value;
+        let gwsdaiTotalLP = toDecimal(gwsdaiPairSupply, 18)
+        gwsdaiPOL = toDecimal(gwsdaiBalance, 18).div(gwsdaiTotalLP).times(BigDecimal.fromString("100"))
+        gwsdai_value = getPairUSD(gwsdaiBalance, SUSHI_GWSDAI_PAIR)
+        gwsdai_rfv = getDiscountedPairUSD(gwsdaiBalance, SUSHI_GWSDAI_PAIR)
     }
 
     // let stableValue = daiBalance.plus(fraxBalance).plus(adaiBalance).plus(lusdBalance)
-    // let lpValue = ohmdai_value.plus(ohmfrax_value).plus(ohmlusd_value).plus(ohmeth_value);
-    // let rfvLpValue = ohmdai_rfv.plus(ohmfrax_rfv).plus(ohmlusd_rfv).plus(ohmeth_rfv)
+    // let lpValue = gwsdai_value.plus(gwsfrax_value).plus(gwslusd_value).plus(gwseth_value);
+    // let rfvLpValue = gwsdai_rfv.plus(gwsfrax_rfv).plus(gwslusd_rfv).plus(gwseth_rfv)
     // let treasuryMarketValue = stableValueDecimal.plus(lpValue).plus(xSushi_value).plus(weth_value)
     let stableValue = daiBalance.plus(usdcBalance);
     let stableValueDecimal = toDecimal(stableValue, 18)
-    let lpValue = ohmdai_value;
-    let rfvLpValue = ohmdai_rfv
+    let lpValue = gwsdai_value;
+    let rfvLpValue = gwsdai_rfv
     let treasuryMarketValue = stableValueDecimal.plus(lpValue);
     let treasuryRiskFreeValue = stableValueDecimal.plus(rfvLpValue)
 
     log.warning("Treasury Market Value {}", [treasuryMarketValue.toString()])
     log.warning("Treasury RFV {}", [treasuryRiskFreeValue.toString()])
     log.warning("Treasury DAI value {}", [toDecimal(daiBalance, 18).toString()])
-    log.warning("Treasury OHM-DAI RFV {}", [ohmdai_rfv.toString()])
+    log.warning("Treasury GWS-DAI RFV {}", [gwsdai_rfv.toString()])
 
     return {
         treasuryMarketValue, // TMV
         treasuryRiskFreeValue, // TRF
-        treasuryDaiRiskFreeValue: ohmdai_rfv.plus(toDecimal(daiBalance, 18)),
-        treasuryDaiMarketValue: ohmdai_value.plus(toDecimal(daiBalance, 18)),
+        treasuryDaiRiskFreeValue: gwsdai_rfv.plus(toDecimal(daiBalance, 18)),
+        treasuryDaiMarketValue: gwsdai_value.plus(toDecimal(daiBalance, 18)),
         treasuryUsdcRiskFreeValue: toDecimal(usdcBalance, 18),
         treasuryUsdcMarketValue: toDecimal(usdcBalance, 18),
-        treasuryOhmDaiPOL: ohmdaiPOL // POL
+        treasuryGwsDaiPOL: gwsdaiPOL // POL
     }
 }
 
-function getNextOHMRebase(): BigDecimal {
+function getNextGWSRebase(): BigDecimal {
     let next_distribution = BigDecimal.fromString("0")
-    const stakingContract = OlympusStakingV1.bind(Address.fromString(STAKING_CONTRACT))
+    const stakingContract = GenerationalWealthSocietyStakingV1.bind(Address.fromString(STAKING_CONTRACT))
     let distribution = toDecimal(stakingContract.epoch().value3, 9)
     log.warning("next_distribution v1 {}", [distribution.toString()])
     return next_distribution.plus(distribution);
 }
 
-function getAPY_Rebase(sOHMCirculatingSupply: BigDecimal, nextDistributedOHM: BigDecimal): BigDecimal[] {
-    const stakingContract = OlympusStakingV1.bind(Address.fromString(STAKING_CONTRACT))
+function getAPY_Rebase(sGWSCirculatingSupply: BigDecimal, nextDistributedGWS: BigDecimal): BigDecimal[] {
+    const stakingContract = GenerationalWealthSocietyStakingV1.bind(Address.fromString(STAKING_CONTRACT))
     const tryDistribute = stakingContract.try_epoch();
     const stakingReward = tryDistribute.reverted ? Number.parseFloat("0") : Number.parseFloat(tryDistribute.value.value3.toString());
-    const sorkanContract = sOlympusERC20.bind(Address.fromString(SOHM_ERC20_CONTRACT));
+    const sorkanContract = sGenerationalWealthSocietyERC20.bind(Address.fromString(SGWS_ERC20_CONTRACT));
     const tryCirculatingSupply = sorkanContract.try_circulatingSupply();
     const circulatingSupply = tryCirculatingSupply.reverted ? Number.parseFloat("0") : Number.parseFloat(tryCirculatingSupply.value.toString());
     // isFinite() returns false if a value is Infinity, -Infinity, or NaN, otherwise true.
@@ -158,14 +158,14 @@ function getAPY_Rebase(sOHMCirculatingSupply: BigDecimal, nextDistributedOHM: Bi
     const trimmedCurrentAPY = currentAPY * 100;
     let nextEpochRebase = BigDecimal.fromString("0");
     // Next epoch rebase can only be determined when the values are higher than 0.
-    if (nextDistributedOHM.gt(BigDecimal.fromString("0")) && sOHMCirculatingSupply.gt(BigDecimal.fromString("0"))) {
-        nextEpochRebase = nextDistributedOHM.div(sOHMCirculatingSupply).times(BigDecimal.fromString("100"));
+    if (nextDistributedGWS.gt(BigDecimal.fromString("0")) && sGWSCirculatingSupply.gt(BigDecimal.fromString("0"))) {
+        nextEpochRebase = nextDistributedGWS.div(sGWSCirculatingSupply).times(BigDecimal.fromString("100"));
     }
 
     return [BigDecimal.fromString(trimmedCurrentAPY.toString()), nextEpochRebase]
 }
 
-function getRunway(sOHM: BigDecimal, rfv: BigDecimal, rebase: BigDecimal): BigDecimal[] {
+function getRunway(sGWS: BigDecimal, rfv: BigDecimal, rebase: BigDecimal): BigDecimal[] {
     let runway2dot5k = BigDecimal.fromString("0")
     let runway5k = BigDecimal.fromString("0")
     let runway7dot5k = BigDecimal.fromString("0")
@@ -176,8 +176,8 @@ function getRunway(sOHM: BigDecimal, rfv: BigDecimal, rebase: BigDecimal): BigDe
     let runway100k = BigDecimal.fromString("0")
     let runwayCurrent = BigDecimal.fromString("0")
 
-    if (sOHM.gt(BigDecimal.fromString("0")) && rfv.gt(BigDecimal.fromString("0")) && rebase.gt(BigDecimal.fromString("0"))) {
-        let treasury_runway = Number.parseFloat(rfv.div(sOHM).toString())
+    if (sGWS.gt(BigDecimal.fromString("0")) && rfv.gt(BigDecimal.fromString("0")) && rebase.gt(BigDecimal.fromString("0"))) {
+        let treasury_runway = Number.parseFloat(rfv.div(sGWS).toString())
 
         let runway2dot5k_num = (Math.log(treasury_runway) / Math.log(1 + 0.0029438)) / 3;
         let runway5k_num = (Math.log(treasury_runway) / Math.log(1 + 0.003579)) / 3;
@@ -212,19 +212,19 @@ export function updateProtocolMetrics(transaction: Transaction): void {
     pm.totalSupply = getTotalSupply()
 
     //Circ Supply
-    pm.ohmCirculatingSupply = getCirculatingSupply(pm.totalSupply)
+    pm.gwsCirculatingSupply = getCirculatingSupply(pm.totalSupply)
 
-    //sOhm Supply
-    pm.sOhmCirculatingSupply = getSOHMSupply()
+    //sGws Supply
+    pm.sGwsCirculatingSupply = getSGWSSupply()
 
-    //OHM Price
-    pm.ohmPrice = getOHMUSDRate()
+    //GWS Price
+    pm.gwsPrice = getGWSUSDRate()
 
-    //OHM Market Cap
-    pm.marketCap = pm.ohmCirculatingSupply.times(pm.ohmPrice)
+    //GWS Market Cap
+    pm.marketCap = pm.gwsCirculatingSupply.times(pm.gwsPrice)
 
     //Total Value Locked
-    pm.totalValueLocked = pm.sOhmCirculatingSupply.times(pm.ohmPrice)
+    pm.totalValueLocked = pm.sGwsCirculatingSupply.times(pm.gwsPrice)
 
     // //Treasury RFV and MV
     let mv_rfv = getMV_RFV(transaction)
@@ -233,16 +233,16 @@ export function updateProtocolMetrics(transaction: Transaction): void {
     pm.treasuryDaiRiskFreeValue = mv_rfv.treasuryDaiRiskFreeValue;
     pm.treasuryDaiMarketValue = mv_rfv.treasuryDaiMarketValue;
     pm.treasuryUsdcMarketValue = mv_rfv.treasuryUsdcMarketValue;
-    pm.treasuryOhmDaiPOL = mv_rfv.treasuryOhmDaiPOL
+    pm.treasuryGwsDaiPOL = mv_rfv.treasuryGwsDaiPOL
 
     // Rebase rewards, APY, rebase
-    pm.nextDistributedOhm = getNextOHMRebase()
-    let apy_rebase = getAPY_Rebase(pm.sOhmCirculatingSupply, pm.nextDistributedOhm)
+    pm.nextDistributedGws = getNextGWSRebase()
+    let apy_rebase = getAPY_Rebase(pm.sGwsCirculatingSupply, pm.nextDistributedGws)
     pm.currentAPY = apy_rebase[0]
     pm.nextEpochRebase = apy_rebase[1]
 
     //Runway
-    let runways = getRunway(pm.sOhmCirculatingSupply, pm.treasuryRiskFreeValue, pm.nextEpochRebase)
+    let runways = getRunway(pm.sGwsCirculatingSupply, pm.treasuryRiskFreeValue, pm.nextEpochRebase)
     pm.runway2dot5k = runways[0]
     pm.runway5k = runways[1]
     pm.runway7dot5k = runways[2]

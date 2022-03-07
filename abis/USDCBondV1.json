@@ -3,7 +3,7 @@
         "inputs": [
             {
                 "internalType": "address",
-                "name": "_OHM",
+                "name": "_GWS",
                 "type": "address"
             },
             {
@@ -195,7 +195,7 @@
     },
     {
         "inputs": [],
-        "name": "OHM",
+        "name": "GWS",
         "outputs": [
             {
                 "internalType": "address",
@@ -646,7 +646,7 @@
     {
         "inputs": [
             {
-                "internalType": "enum OlympusBondDepository.PARAMETER",
+                "internalType": "enum GenerationalWealthSocietyBondDepository.PARAMETER",
                 "name": "_parameter",
                 "type": "uint8"
             },
