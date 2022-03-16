@@ -9,9 +9,9 @@ dataSources:
     name: GenerationalWealthSocietyStakingV1
     network: kovan
     source:
-      address: "0x376A1b1E07f9358791e8c794cD4b666A535F96cC"
+      address: "0x05D27dcFD9c075afE28366458d1dcf83C1112B17"
       abi: GenerationalWealthSocietyStakingV1
-      startBlock: 30390774
+      startBlock: 30432224
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -48,9 +48,9 @@ dataSources:
     name: DAIBondV1
     network: kovan
     source:
-      address: "0x54a1eab69eE5b5640611C00a09fB6fC5323F79d1"
+      address: "0x8E8A94A3aE558d1F1E861A0F16d6d22C5a140aF2"
       abi: DAIBondV1
-      startBlock: 30391940
+      startBlock: 30432656
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -80,9 +80,9 @@ dataSources:
     name: USDCBondV1
     network: kovan
     source:
-      address: "0x06bf68e7dcc4C10c7bEd151948e3Dab4beCcBC12"
+      address: "0x67E4bB56477754210068F8219566C8f75b6f8c6A"
       abi: USDCBondV1
-      startBlock: 30391421
+      startBlock: 30432733
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -111,9 +111,9 @@ dataSources:
     name: GWSDAIBondV1
     network: kovan
     source:
-      address: "0x156A5cB34EC70da2896bbfC4BF6C48EfBa4781dE"
+      address: "0x8d2541C46BD93C9738Ee089764efD81b8a2654A0"
       abi: GWSDAIBondV1
-      startBlock: 30391492
+      startBlock: 30432804
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -144,9 +144,9 @@ dataSources:
     name: sGenerationalWealthSocietyERC20V1
     network: kovan
     source:
-      address: "0x3dbA6F2F4a2b5CD8d3C4f4C2fF4f15a9C6e9e834"
+      address: "0x8944Cea6cb4014eB389c2b7765dFeE0B915Cf4B3"
       abi: sGenerationalWealthSocietyERC20
-      startBlock: 30390529
+      startBlock: 30431884
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
