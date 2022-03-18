@@ -27,8 +27,11 @@ export function getGWSUSDRate(): BigDecimal {
     let marketPrice: BigDecimal = BigDecimal.fromString("0");
     if (reserves.reverted == false) {
         let reserve0 = reserves.value.value0.toBigDecimal()
+        log.warning("reserve0 {}", [reserve0.toString()]);
         let reserve1 = reserves.value.value1.toBigDecimal()
-        let rate = reserve0.div(reserve1).div(BIG_DECIMAL_1E9);
+        log.warning("reserve1 {}", [reserve1.toString()]);
+        let rate = reserve1.div(reserve0).div(BIG_DECIMAL_1E9);
+        log.warning("rate {}", [rate.toString()]);
         marketPrice = rate;
     }
     log.warning("getGWSUSDRate reverted {}", [reserves.reverted.toString()]);

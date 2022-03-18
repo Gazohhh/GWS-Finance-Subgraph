@@ -7,11 +7,11 @@ dataSources:
   #Staking Contract V1
   - kind: ethereum/contract
     name: GenerationalWealthSocietyStakingV1
-    network: kovan
+    network: mainnet
     source:
-      address: "0x05D27dcFD9c075afE28366458d1dcf83C1112B17"
+      address: "0x842222BbaEcEb854993c5AD3F63e98fdFf214393"
       abi: GenerationalWealthSocietyStakingV1
-      startBlock: 30432224
+      startBlock: 14410454
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -46,11 +46,11 @@ dataSources:
   #DAI Bond Contract V1
   - kind: ethereum/contract
     name: DAIBondV1
-    network: kovan
+    network: mainnet
     source:
-      address: "0x8E8A94A3aE558d1F1E861A0F16d6d22C5a140aF2"
+      address: "0xab06bB32aBD44E13Acd23e5778FaECfb8fAc79bf"
       abi: DAIBondV1
-      startBlock: 30432656
+      startBlock: 14411158
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -78,11 +78,11 @@ dataSources:
   #USDC Bond Contract V1
   - kind: ethereum/contract
     name: USDCBondV1
-    network: kovan
+    network: mainnet
     source:
-      address: "0x67E4bB56477754210068F8219566C8f75b6f8c6A"
+      address: "0x916B942252Ee884762C83C79c7Ec8FaAE2e90001"
       abi: USDCBondV1
-      startBlock: 30432733
+      startBlock: 14411054
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -109,11 +109,11 @@ dataSources:
   #GWS DAI LP Bond Contract
   - kind: ethereum/contract
     name: GWSDAIBondV1
-    network: kovan
+    network: mainnet
     source:
-      address: "0x8d2541C46BD93C9738Ee089764efD81b8a2654A0"
+      address: "0x75d3f064333E0b86fD3e24F64850063A9fE034F0"
       abi: GWSDAIBondV1
-      startBlock: 30432804
+      startBlock: 14411188
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -142,11 +142,11 @@ dataSources:
   #sGWS
   - kind: ethereum/contract
     name: sGenerationalWealthSocietyERC20V1
-    network: kovan
+    network: mainnet
     source:
-      address: "0x8944Cea6cb4014eB389c2b7765dFeE0B915Cf4B3"
+      address: "0xAfAF6d0503c093E80403Ba9FDAFBCD4B180e8162"
       abi: sGenerationalWealthSocietyERC20
-      startBlock: 30431884
+      startBlock: 14410450
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

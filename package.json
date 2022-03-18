@@ -4,7 +4,7 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ gazohx/gwskovan11 ./subgraph.yaml --access-token b0987aa861e74b808ab1017883828cc1"
+    "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ gazohx/gwsmainnetv1 ./subgraph.yaml --access-token b0987aa861e74b808ab1017883828cc1"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "^0.22.0",
