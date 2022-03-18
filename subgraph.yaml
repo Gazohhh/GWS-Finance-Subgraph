@@ -48,9 +48,9 @@ dataSources:
     name: DAIBondV1
     network: mainnet
     source:
-      address: "0xab06bB32aBD44E13Acd23e5778FaECfb8fAc79bf"
+      address: "0x45bfBd4A262971dBF63E5b00eB44384ab87Fab61"
       abi: DAIBondV1
-      startBlock: 14411158
+      startBlock: 14411566
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -75,45 +75,14 @@ dataSources:
           handler: handleRedeem
       file:
         ./src/DAIBondV1.ts
-  #USDC Bond Contract V1
-  - kind: ethereum/contract
-    name: USDCBondV1
-    network: mainnet
-    source:
-      address: "0x916B942252Ee884762C83C79c7Ec8FaAE2e90001"
-      abi: USDCBondV1
-      startBlock: 14411054
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - USDCBondDeposit
-      abis:
-        - name: GenerationalWealthSocietyStakingV1
-          file: ./abis/GenerationalWealthSocietyStakingV1.json
-        - name: sGenerationalWealthSocietyERC20
-          file: ./abis/sGenerationalWealthSocietyERC20.json
-        - name: GenerationalWealthSocietyERC20
-          file: ./abis/GenerationalWealthSocietyERC20.json
-        - name: UniswapV2Pair
-          file: ./abis/UniswapV2Pair.json
-        - name: USDCBondV1
-          file: ./abis/USDCBondV1.json
-      callHandlers:
-        - function: deposit(uint256,uint256,address)
-          handler: handleDeposit
-        - function: redeem(address,bool)
-          handler: handleRedeem
-      file: ./src/USDCBondV1.ts
   #GWS DAI LP Bond Contract
   - kind: ethereum/contract
     name: GWSDAIBondV1
     network: mainnet
     source:
-      address: "0x75d3f064333E0b86fD3e24F64850063A9fE034F0"
+      address: "0x96b2A9C51e3364195F133c8B34FDADCD21Ca59eC"
       abi: GWSDAIBondV1
-      startBlock: 14411188
+      startBlock: 14411594
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
