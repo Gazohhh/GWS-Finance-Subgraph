@@ -7,10 +7,17 @@ export const GWSDAILPBOND_TOKEN: string             = "GWS-DAI";
 export const GWSDAISLPBOND_CONTRACT: string         = '0x75d3f064333E0b86fD3e24F64850063A9fE034F0';
 export const GWSDAISLPBOND_CONTRACT_BLOCK: string   = '14411188';
 
+export const GWSDAIV2LPBOND_TOKEN: string           = "GWS-DAI";
+export const GWSDAIV2SLPBOND_CONTRACT: string       = '0x81015E04DC4bb6Cc6B4a59661B3D49a2451A1903';
+export const GWSDAIV2SLPBOND_CONTRACT_BLOCK: string = '14418260';
+
 export const DAIBOND_TOKEN: string                  = "DAI";
 export const DAI_ERC20_CONTRACT: string             = '0x6B175474E89094C44Da98b954EedeAC495271d0F';
 export const DAIBOND_CONTRACT: string               = '0xab06bB32aBD44E13Acd23e5778FaECfb8fAc79bf';
 export const DAIBOND_CONTRACT_BLOCK: string         = '14411158';
+
+export const DAIBONDV2_CONTRACT: string             = '0x5bf0f435fD138b307Ad36fF89E582154B8F7B89d';
+export const DAIBONDV2_CONTRACT_BLOCK: string       = '14418233';
 
 export const USDCBOND_TOKEN: string                 = "USDC";
 export const USDC_ERC20_CONTRACT: string            = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';

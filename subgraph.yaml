@@ -73,8 +73,38 @@ dataSources:
           handler: handleDeposit
         - function: redeem(address,bool)
           handler: handleRedeem
-      file:
-        ./src/DAIBondV1.ts
+      file: ./src/DAIBondV1.ts
+  #DAI Bond Contract V2
+  - kind: ethereum/contract
+    name: DAIBondV2
+    network: mainnet
+    source:
+      address: "0x5bf0f435fD138b307Ad36fF89E582154B8F7B89d"
+      abi: DAIBondV1
+      startBlock: 14418233
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - DAIBondDeposit
+      abis:
+        - name: GenerationalWealthSocietyStakingV1
+          file: ./abis/GenerationalWealthSocietyStakingV1.json
+        - name: sGenerationalWealthSocietyERC20
+          file: ./abis/sGenerationalWealthSocietyERC20.json
+        - name: GenerationalWealthSocietyERC20
+          file: ./abis/GenerationalWealthSocietyERC20.json
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json
+        - name: DAIBondV1
+          file: ./abis/DAIBondV1.json
+      callHandlers:
+        - function: deposit(uint256,uint256,address)
+          handler: handleDeposit
+        - function: redeem(address,bool)
+          handler: handleRedeem
+      file: ./src/DAIBondV2.ts
   #GWS DAI LP Bond Contract
   - kind: ethereum/contract
     name: GWSDAIBondV1
@@ -107,7 +137,41 @@ dataSources:
           handler: handleDeposit
         - function: redeem(address,bool)
           handler: handleRedeem
-      file: ./src/GWSDAIBondV1.ts
+      file:
+        ./src/GWSDAIBondV1.ts
+  #GWS DAI LP Bond V2 Contract
+  - kind: ethereum/contract
+    name: GWSDAIBondV2
+    network: mainnet
+    source:
+      address: "0x81015E04DC4bb6Cc6B4a59661B3D49a2451A1903"
+      abi: GWSDAIBondV1
+      startBlock: 14418260
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - GWSDAIBondV2
+      abis:
+        - name: GenerationalWealthSocietyStakingV1
+          file: ./abis/GenerationalWealthSocietyStakingV1.json
+        - name: sGenerationalWealthSocietyERC20
+          file: ./abis/sGenerationalWealthSocietyERC20.json
+        - name: GenerationalWealthSocietyERC20
+          file: ./abis/GenerationalWealthSocietyERC20.json
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json
+        - name: DAIBondV1
+          file: ./abis/DAIBondV1.json
+        - name: GWSDAIBondV1
+          file: ./abis/GWSDAIBondV1.json
+      callHandlers:
+        - function: deposit(uint256,uint256,address)
+          handler: handleDeposit
+        - function: redeem(address,bool)
+          handler: handleRedeem
+      file: ./src/GWSDAIBondV2.ts
   #sGWS
   - kind: ethereum/contract
     name: sGenerationalWealthSocietyERC20V1
