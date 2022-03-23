@@ -1,5 +1,6 @@
 // # Pools
 export const SUSHI_GWSDAI_PAIR: string              = '0x5669Deb8CC857661e64Fe08F41Bd74536758818E';
+export const DAI_ERC20_CONTRACT: string             = '0x6B175474E89094C44Da98b954EedeAC495271d0F';
 export const SUSHI_USDC_ETH_PAIR                    = '0x397ff1542f962076d0bfe58ea045ffa2d347aca0'; // MAINNET
 
 // # Bonds
@@ -7,22 +8,25 @@ export const GWSDAILPBOND_TOKEN: string             = "GWS-DAI";
 export const GWSDAISLPBOND_CONTRACT: string         = '0x75d3f064333E0b86fD3e24F64850063A9fE034F0';
 export const GWSDAISLPBOND_CONTRACT_BLOCK: string   = '14411188';
 
-export const GWSDAIV2LPBOND_TOKEN: string           = "GWS-DAI";
+export const GWSDAIV2LPBOND_TOKEN: string           = "GWS-DAI V2";
 export const GWSDAIV2SLPBOND_CONTRACT: string       = '0x81015E04DC4bb6Cc6B4a59661B3D49a2451A1903';
 export const GWSDAIV2SLPBOND_CONTRACT_BLOCK: string = '14418260';
 
+export const GWSDAIV3LPBOND_TOKEN: string           = "GWS-DAI V3";
+export const GWSDAIV3SLPBOND_CONTRACT: string       = '0x15eE1208802af6c2a1D004c72003b1533664443D';
+export const GWSDAIV3SLPBOND_CONTRACT_BLOCK: string = '14442560';
+
 export const DAIBOND_TOKEN: string                  = "DAI";
-export const DAI_ERC20_CONTRACT: string             = '0x6B175474E89094C44Da98b954EedeAC495271d0F';
 export const DAIBOND_CONTRACT: string               = '0xab06bB32aBD44E13Acd23e5778FaECfb8fAc79bf';
 export const DAIBOND_CONTRACT_BLOCK: string         = '14411158';
 
+export const DAIBONDV2_TOKEN: string                = "DAI V2";
 export const DAIBONDV2_CONTRACT: string             = '0x5bf0f435fD138b307Ad36fF89E582154B8F7B89d';
 export const DAIBONDV2_CONTRACT_BLOCK: string       = '14418233';
 
-export const USDCBOND_TOKEN: string                 = "USDC";
-export const USDC_ERC20_CONTRACT: string            = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
-export const USDCBOND_CONTRACT: string              = '0x916B942252Ee884762C83C79c7Ec8FaAE2e90001';
-export const USDCBOND_CONTRACT_BLOCK: string        = '14411054';
+export const DAIBONDV3_TOKEN: string                = "DAI V3";
+export const DAIBONDV3_CONTRACT: string             = '0x581158433D4CD805dcc89EA2EA63917611655198';
+export const DAIBONDV3_CONTRACT_BLOCK: string       = '14442540';
 
 // # Addresses
 export const TREASURY_ADDRESS: string               = '0xF6b7EA4D234c545f061fF6D5a1a3d447eA8d8a46';

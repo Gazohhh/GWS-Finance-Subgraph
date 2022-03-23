@@ -3,7 +3,7 @@ import { GWSDAIBondV1 } from '../../generated/GWSDAIBondV1/GWSDAIBondV1';
 import { DAIBondV1 } from '../../generated/DAIBondV1/DAIBondV1';
 
 import { BondDiscount, Transaction } from '../../generated/schema'
-import { DAIBONDV2_CONTRACT, DAIBONDV2_CONTRACT_BLOCK, DAIBOND_CONTRACT, DAIBOND_CONTRACT_BLOCK, GWSDAISLPBOND_CONTRACT, GWSDAISLPBOND_CONTRACT_BLOCK, GWSDAIV2SLPBOND_CONTRACT, GWSDAIV2SLPBOND_CONTRACT_BLOCK } from './Constants';
+import { DAIBONDV2_CONTRACT, DAIBONDV2_CONTRACT_BLOCK, DAIBONDV3_CONTRACT, DAIBONDV3_CONTRACT_BLOCK, DAIBOND_CONTRACT, DAIBOND_CONTRACT_BLOCK, GWSDAISLPBOND_CONTRACT, GWSDAISLPBOND_CONTRACT_BLOCK, GWSDAIV2SLPBOND_CONTRACT, GWSDAIV2SLPBOND_CONTRACT_BLOCK, GWSDAIV3SLPBOND_CONTRACT, GWSDAIV3SLPBOND_CONTRACT_BLOCK } from './Constants';
 import { hourFromTimestamp } from './Dates';
 import { toDecimal } from './Decimals';
 import { getGWSUSDRate } from './Price';
@@ -57,6 +57,19 @@ export function updateBondDiscounts(transaction: Transaction): void {
         bd.gwsdai_discount = gwsRate.div(toDecimal(price_call.value, 18)).minus(BigDecimal.fromString("1")).times(BigDecimal.fromString("100"))
     }
 
+    //GWSDAI V3
+    if (transaction.blockNumber.gt(BigInt.fromString(GWSDAIV3SLPBOND_CONTRACT_BLOCK))) {
+        let bond = GWSDAIBondV1.bind(Address.fromString(GWSDAIV3SLPBOND_CONTRACT))
+        let price_call = bond.try_bondPriceInUSD()
+        if (price_call.reverted === false && price_call.value.gt(BigInt.fromI32(0))) {
+            bd.gwsdai_discount = gwsRate.div(toDecimal(price_call.value, 18))
+            bd.gwsdai_discount = bd.gwsdai_discount.minus(BigDecimal.fromString("1"))
+            bd.gwsdai_discount = bd.gwsdai_discount.times(BigDecimal.fromString("100"))
+            log.warning("GWSDAI Discount GWS price {}  Bond Price {}  Discount {}", [gwsRate.toString(), price_call.value.toString(), bd.gwsfrax_discount.toString()])
+        }
+        bd.gwsdai_discount = gwsRate.div(toDecimal(price_call.value, 18)).minus(BigDecimal.fromString("1")).times(BigDecimal.fromString("100"))
+    }
+
     //DAI
     if (transaction.blockNumber.gt(BigInt.fromString(DAIBOND_CONTRACT_BLOCK))) {
         let bond = DAIBondV1.bind(Address.fromString(DAIBOND_CONTRACT))
@@ -69,6 +82,15 @@ export function updateBondDiscounts(transaction: Transaction): void {
     //DAI V2
     if (transaction.blockNumber.gt(BigInt.fromString(DAIBONDV2_CONTRACT_BLOCK))) {
         let bond = DAIBondV1.bind(Address.fromString(DAIBONDV2_CONTRACT))
+        let price_call = bond.try_bondPriceInUSD()
+        if (price_call.reverted === false && price_call.value.gt(BigInt.fromI32(0))) {
+            bd.dai_discount = gwsRate.div(toDecimal(price_call.value, 18)).minus(BigDecimal.fromString("1")).times(BigDecimal.fromString("100"))
+        }
+    }
+
+    //DAI V3
+    if (transaction.blockNumber.gt(BigInt.fromString(DAIBONDV3_CONTRACT_BLOCK))) {
+        let bond = DAIBondV1.bind(Address.fromString(DAIBONDV3_CONTRACT))
         let price_call = bond.try_bondPriceInUSD()
         if (price_call.reverted === false && price_call.value.gt(BigInt.fromI32(0))) {
             bd.dai_discount = gwsRate.div(toDecimal(price_call.value, 18)).minus(BigDecimal.fromString("1")).times(BigDecimal.fromString("100"))

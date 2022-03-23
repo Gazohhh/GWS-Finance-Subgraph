@@ -7,7 +7,7 @@ import { UniswapV2Pair } from '../../generated/GenerationalWealthSocietyStakingV
 import { GenerationalWealthSocietyStakingV1 } from '../../generated/GenerationalWealthSocietyStakingV1/GenerationalWealthSocietyStakingV1';
 
 import { ProtocolMetric, Transaction } from '../../generated/schema'
-import { CIRCULATING_SUPPLY_CONTRACT, DAI_ERC20_CONTRACT, GWSDAISLPBOND_CONTRACT_BLOCK, GWS_ERC20_CONTRACT, SGWS_ERC20_CONTRACT, STAKING_CONTRACT, SUSHI_GWSDAI_PAIR, TREASURY_ADDRESS, USDC_ERC20_CONTRACT } from './Constants';
+import { CIRCULATING_SUPPLY_CONTRACT, DAI_ERC20_CONTRACT, GWSDAISLPBOND_CONTRACT_BLOCK, GWS_ERC20_CONTRACT, SGWS_ERC20_CONTRACT, STAKING_CONTRACT, SUSHI_GWSDAI_PAIR, TREASURY_ADDRESS } from './Constants';
 import { dayFromTimestamp } from './Dates';
 import { toDecimal } from './Decimals';
 import { getGWSUSDRate, getDiscountedPairUSD, getPairUSD } from './Price';
@@ -35,7 +35,6 @@ export function loadOrCreateProtocolMetric(timestamp: BigInt): ProtocolMetric {
         protocolMetric.currentAPY = BigDecimal.fromString("0")
         protocolMetric.treasuryDaiRiskFreeValue = BigDecimal.fromString("0")
         protocolMetric.treasuryDaiMarketValue = BigDecimal.fromString("0")
-        protocolMetric.treasuryUsdcMarketValue = BigDecimal.fromString("0")
         protocolMetric.treasuryGwsDaiPOL = BigDecimal.fromString("0")
         protocolMetric.treasuryGwsLusdPOL = BigDecimal.fromString("0")
         protocolMetric.treasuryGwsEthPOL = BigDecimal.fromString("0")
@@ -77,7 +76,6 @@ function getSGWSSupply(): BigDecimal {
 
 function getMV_RFV(transaction: Transaction): ITreasury {
     let daiERC20 = ERC20.bind(Address.fromString(DAI_ERC20_CONTRACT))
-    let usdcERC20 = ERC20.bind(Address.fromString(USDC_ERC20_CONTRACT))
     let gwsdaiPair = UniswapV2Pair.bind(Address.fromString(SUSHI_GWSDAI_PAIR))
     let treasury_address = TREASURY_ADDRESS;
 
@@ -86,32 +84,25 @@ function getMV_RFV(transaction: Transaction): ITreasury {
     let daiBalance = daiTryBalance.reverted ? BigInt.fromString("0") : daiTryBalance.value;
     log.warning("daiBalance Value {}", [daiBalance.toString()])
 
-    // USDC
-    let usdcTryBalance = usdcERC20.try_balanceOf(Address.fromString(treasury_address))
-    let usdcBalance = usdcTryBalance.reverted ? BigInt.fromString("0") : usdcTryBalance.value;
-    log.warning("usdcBalance Value {}", [usdcBalance.toString()])
-
     // GWS-DAI
     let gwsdai_value = BigDecimal.fromString("0");
     let gwsdai_rfv = BigDecimal.fromString("0");
     let gwsdaiPOL = BigDecimal.fromString("0");
     if (transaction.blockNumber.gt(BigInt.fromString(GWSDAISLPBOND_CONTRACT_BLOCK))) {
-        let gwsdaiSushiTryBalance = gwsdaiPair.try_balanceOf(Address.fromString(treasury_address))
-        let gwsdaiSushiBalance = gwsdaiSushiTryBalance.reverted ? BigInt.fromString("0") : gwsdaiSushiTryBalance.value;
-        let gwsdaiBalance = gwsdaiSushiBalance;
+        let gwsdaiTryUniBalance = gwsdaiPair.try_balanceOf(Address.fromString(treasury_address))
+        let gwsdaiUniBalance = gwsdaiTryUniBalance.reverted ? BigInt.fromString("0") : gwsdaiTryUniBalance.value;
+        let gwsdaiBalance = gwsdaiUniBalance;
         let gwsdaiPairTrySupply = gwsdaiPair.try_totalSupply()
         let gwsdaiPairSupply = gwsdaiPairTrySupply.reverted ? BigInt.fromString("0") : gwsdaiPairTrySupply.value;
-        let gwsdaiTotalLP = toDecimal(gwsdaiPairSupply, 18)
-        gwsdaiPOL = toDecimal(gwsdaiBalance, 18).div(gwsdaiTotalLP).times(BigDecimal.fromString("100"))
+        log.warning("toDecimal(gwsdaiBalance, 18) {}", [toDecimal(gwsdaiBalance, 18).toString()])
+        log.warning("toDecimal(gwsdaiPairSupply, 18) {}", [toDecimal(gwsdaiPairSupply, 18).toString()])
+        gwsdaiPOL = toDecimal(gwsdaiBalance, 18).div(toDecimal(gwsdaiPairSupply, 18)).times(BigDecimal.fromString("100"))
+        log.warning("gwsdaiPOL {}", [gwsdaiPOL.toString()])
         gwsdai_value = getPairUSD(gwsdaiBalance, SUSHI_GWSDAI_PAIR)
         gwsdai_rfv = getDiscountedPairUSD(gwsdaiBalance, SUSHI_GWSDAI_PAIR)
     }
 
-    // let stableValue = daiBalance.plus(fraxBalance).plus(adaiBalance).plus(lusdBalance)
-    // let lpValue = gwsdai_value.plus(gwsfrax_value).plus(gwslusd_value).plus(gwseth_value);
-    // let rfvLpValue = gwsdai_rfv.plus(gwsfrax_rfv).plus(gwslusd_rfv).plus(gwseth_rfv)
-    // let treasuryMarketValue = stableValueDecimal.plus(lpValue).plus(xSushi_value).plus(weth_value)
-    let stableValue = daiBalance.plus(usdcBalance);
+    let stableValue = daiBalance
     let stableValueDecimal = toDecimal(stableValue, 18)
     let lpValue = gwsdai_value;
     let rfvLpValue = gwsdai_rfv
@@ -128,8 +119,6 @@ function getMV_RFV(transaction: Transaction): ITreasury {
         treasuryRiskFreeValue, // TRF
         treasuryDaiRiskFreeValue: gwsdai_rfv.plus(toDecimal(daiBalance, 18)),
         treasuryDaiMarketValue: gwsdai_value.plus(toDecimal(daiBalance, 18)),
-        treasuryUsdcRiskFreeValue: toDecimal(usdcBalance, 18),
-        treasuryUsdcMarketValue: toDecimal(usdcBalance, 18),
         treasuryGwsDaiPOL: gwsdaiPOL // POL
     }
 }
@@ -232,7 +221,6 @@ export function updateProtocolMetrics(transaction: Transaction): void {
     pm.treasuryRiskFreeValue = mv_rfv.treasuryRiskFreeValue;
     pm.treasuryDaiRiskFreeValue = mv_rfv.treasuryDaiRiskFreeValue;
     pm.treasuryDaiMarketValue = mv_rfv.treasuryDaiMarketValue;
-    pm.treasuryUsdcMarketValue = mv_rfv.treasuryUsdcMarketValue;
     pm.treasuryGwsDaiPOL = mv_rfv.treasuryGwsDaiPOL
 
     // Rebase rewards, APY, rebase
